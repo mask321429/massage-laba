@@ -1,11 +1,15 @@
 async function registerPost(data) {
-  const url = 'https://mis-api.kreosoft.space/api/doctor/register';
+  const url = 'https://localhost:44305/api/Auth/register';
+
+  const formData = new FormData();
+  formData.append('Login', data.login);
+  formData.append('Password', data.password);
+  formData.append('BirthDate', data.date);
+  formData.append('Avatar', data.file);
+
   return fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
+    body: formData
   })
     .then(response => response.json())
     .then(result => {
@@ -13,15 +17,15 @@ async function registerPost(data) {
       const errorMessage = document.getElementById('errorMessage');
       errorMessage.textContent = '';
 
-      if (result.message) {
-        errorMessage.textContent = result.message;
-        console.log(result.message);
-      }
+       if (result.message) {
+         errorMessage.textContent = result.message;
+         console.log(result.message);
+       }
 
-      if (result.title) {
-        errorMessage.textContent = result.title;
-        console.log(result.title);
-      }
+       if (result.title) {
+         errorMessage.textContent = result.title;
+         console.log(result.title);
+       }
     
       if (result.token) {
         token = result.token;
@@ -40,21 +44,21 @@ const form = document.querySelector('form');
 if (form) {
   form.addEventListener('submit', function (event) {
     event.preventDefault();
-
     const login = document.getElementById('loginInput').value;
     const password = document.getElementById('passwordInput').value;
-    const file = document.getElementById('fileInput').value;
+    const fileInput = document.getElementById('fileInput');
     const date = document.getElementById('dateInput').value;
+    
+    const file = fileInput.files[0];
 
     const data = {
       login: login,
       password: password,
       date: date,
-      file: file,
+      file: file
     };
 
     console.log(data);
-
     registerPost(data);
   });
 }
