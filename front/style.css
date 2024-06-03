@@ -44,9 +44,10 @@ body{
 
 .container2 {
     background-color: #ccc; /* Серый цвет фона */
-    border-radius: 10px; /* Закругленные края */
+    border-radius: 50px; /* Закругленные края */
     padding: 20px; /* Внутренний отступ для контента */
     text-align: center; /* Выравнивание по центру */
+    width: 80%;
     margin: 0 auto; /* Центрирование по горизонтали */
     max-width: 600px; /* Максимальная ширина контейнера */
 }
@@ -66,18 +67,40 @@ h3 {
     margin: 0;
 }
 
+
 label {
     display: block;
+    margin-top: 10px;
     margin-bottom: 5px;
+    text-align: left;
+    color: #000000;
+    font-size: 11px;
 }
 
-input[type="text"],
-input[type="password"] {
-    border: 2px solid black;
+
+input {
+    display: block;
+    margin-bottom: 15px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #000000;
     border-radius: 20px;
-    padding: 5px;
-    margin: 5px;
-    width: 200px;
+    background-color: #000000;
     color: white;
-    background-color: black;
+    width: 100%;
+
 }
+
+button {
+    display: block;
+    margin-bottom: 15px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+    border-radius: 20px;
+    background-color: #000000;
+    cursor: pointer;
+    color: white;
+    width: 100%;
+}
+

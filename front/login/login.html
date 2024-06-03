@@ -10,13 +10,13 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Arimo:wght@700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
     <div class="navbar">
         <a href="../mainWithoutAutorization/main.html">
-            <img src="/logo.svg" alt="Лого" class="logo">
+            <img src="../logo.svg" alt="Лого" class="logo">
         </a>
         <div class="links">
             <a href="../login/login.html" class="link current-page">Вход</a>
@@ -31,7 +31,8 @@
                 <input type="text" id="login" name="login" placeholder="Введите логин" required>
                 <label for="password">Пароль</label>
                 <input type="password" id="password" name="password" placeholder="Введите пароль" required>
-                <button type="submit">Войти</button>
+                <label style="visibility: hidden;">с</label>
+                <button type="submit" id="login">Войти</button> 
             </form>
         </div>
     </div>
