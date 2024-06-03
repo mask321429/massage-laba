@@ -1,0 +1,83 @@
+body {
+    background-color: black;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background: linear-gradient(to bottom, #000000 0 90%, #0f0f0f);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 20px;
+    padding-bottom: 10px;
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+}
+
+.current-page {
+    border-bottom: 2px solid white;
+    padding-bottom: 5px;
+}
+
+.link {
+    margin-right: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    margin-right: 100px;
+}
+
+body{
+    font-family: 'Rubik', sans-serif;
+}
+
+
+.container {
+    display: flex;
+    margin: 20px;
+}
+
+.container2 {
+    background-color: #ccc; /* Серый цвет фона */
+    border-radius: 10px; /* Закругленные края */
+    padding: 20px; /* Внутренний отступ для контента */
+    text-align: center; /* Выравнивание по центру */
+    margin: 0 auto; /* Центрирование по горизонтали */
+    max-width: 600px; /* Максимальная ширина контейнера */
+}
+
+.column {
+    flex: 1;
+    padding: 20px;
+    font-size: 20px;
+}
+
+h2, p {
+    color: white;
+}
+
+h3 {
+    color: rgb(0, 0, 0);
+    margin: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 5px;
+    margin: 5px;
+    width: 200px;
+    color: white;
+    background-color: black;
+}
