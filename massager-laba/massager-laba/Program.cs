@@ -33,6 +33,27 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var dbContext = services.GetRequiredService<DBContext>();
+        dbContext.Database.Migrate();
+        if (!dbContext.Database.GetPendingMigrations().Any())
+        {
+            dbContext.Database.EnsureCreated(); 
+            Console.WriteLine("Automatically applied migration.");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error occurred while migrating: {ex.Message}");
+    }
+}
+
+
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
