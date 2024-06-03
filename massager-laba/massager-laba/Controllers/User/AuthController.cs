@@ -24,8 +24,8 @@ public class AuthController : ControllerBase
 
         try
         {
-            await _authService.RegisterUser(model);
-            return Ok(new { Message = "User registered successfully" });
+            var result = await _authService.RegisterUser(model);
+            return Ok(result);
         }
         catch (BadHttpRequestException ex)
         {
@@ -47,8 +47,8 @@ public class AuthController : ControllerBase
 
         try
         {
-            await _authService.Login(model);
-            return Ok(new { Message = "User registered successfully" });
+            var result = await _authService.Login(model);
+            return Ok(result);
         }
         catch (BadHttpRequestException ex)
         {
