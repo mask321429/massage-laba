@@ -1,8 +1,10 @@
+using massager_laba.Data.DTO;
 using massager_laba.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace massager_laba.Controllers.User;
-
+[Route("api/[controller]")]
+[ApiController]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -12,16 +14,22 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
-    public async Task<IActionResult> Registration()
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromForm] RegistrationDTO model)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         try
         {
-            return Ok();
+            await _authService.RegisterUser(model);
+            return Ok(new { Message = "User registered successfully" });
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
-            throw;
+            return StatusCode(500, new { Error = ex.Message });
         }
     }
 
