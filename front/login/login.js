@@ -6,7 +6,7 @@ if (form) {
     var login = document.getElementById('loginInput').value;
     var password = document.getElementById('passwordInput').value;
 
-    fetch('https://localhost:7266/api/account/login', {
+    fetch('https://localhost:44305/api/Auth/login', {
     method: 'POST',
     headers: {
     'Accept': 'application/json',

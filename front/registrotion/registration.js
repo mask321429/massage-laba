@@ -17,15 +17,24 @@ async function registerPost(data) {
       const errorMessage = document.getElementById('errorMessage');
       errorMessage.textContent = '';
 
-       if (result.message) {
-         errorMessage.textContent = result.message;
-         console.log(result.message);
+       if (result.error) {
+         errorMessage.textContent = result.error;
+         console.log(result.error);
        }
+       
+      if (result.message) {
+        errorMessage.textContent = result.message;
+        console.log(result.message);
+      }
 
-       if (result.title) {
-         errorMessage.textContent = result.title;
-         console.log(result.title);
-       }
+       if (result.errors) {
+        for (let key in result.errors) {
+            if (result.errors.hasOwnProperty(key)) {
+                errorMessage.textContent += `${key}: ${result.errors[key].join(' ')} \n`;
+                console.log(`${key}: ${result.errors[key].join(' ')}`);
+            }
+        }
+    }
     
       if (result.token) {
         token = result.token;
