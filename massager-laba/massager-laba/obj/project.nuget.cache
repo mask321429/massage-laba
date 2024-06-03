@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+ZrgFSjwtUT70PBdezCQgWOtOTDmdeSTzkLIsJMsB7QemwhcvpgvbvglDvOpdj4++SIROYXrXnYADeds7zcoZw==",
+  "dgSpecHash": "5fB+Xk8fdwj/2Hv0YXsw9xOVjG9f4muV7JSPEQ/+FkML1ysDBSuthS7FKQAzf0xvri091IdrNlDoeRRJM8UpGg==",
   "success": true,
   "projectFilePath": "/Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/massager-laba.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "/Users/kiselevmaksim/.nuget/packages/awssdk.extensions.netcore.setup/3.7.300/awssdk.extensions.netcore.setup.3.7.300.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/awssdk.s3/3.7.308.7/awssdk.s3.3.7.308.7.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
+    "/Users/kiselevmaksim/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/7.0.0/microsoft.aspnetcore.authentication.jwtbearer.7.0.0.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/microsoft.aspnetcore.openapi/7.0.18/microsoft.aspnetcore.openapi.7.0.18.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/microsoft.entityframeworkcore/7.0.0/microsoft.entityframeworkcore.7.0.0.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/microsoft.entityframeworkcore.abstractions/7.0.0/microsoft.entityframeworkcore.abstractions.7.0.0.nupkg.sha512",
@@ -26,6 +27,12 @@
     "/Users/kiselevmaksim/.nuget/packages/microsoft.extensions.logging.abstractions/7.0.0/microsoft.extensions.logging.abstractions.7.0.0.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/microsoft.extensions.options/7.0.0/microsoft.extensions.options.7.0.0.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/microsoft.extensions.primitives/7.0.0/microsoft.extensions.primitives.7.0.0.nupkg.sha512",
+    "/Users/kiselevmaksim/.nuget/packages/microsoft.identitymodel.abstractions/7.0.0/microsoft.identitymodel.abstractions.7.0.0.nupkg.sha512",
+    "/Users/kiselevmaksim/.nuget/packages/microsoft.identitymodel.jsonwebtokens/7.0.0/microsoft.identitymodel.jsonwebtokens.7.0.0.nupkg.sha512",
+    "/Users/kiselevmaksim/.nuget/packages/microsoft.identitymodel.logging/7.0.0/microsoft.identitymodel.logging.7.0.0.nupkg.sha512",
+    "/Users/kiselevmaksim/.nuget/packages/microsoft.identitymodel.protocols/6.15.1/microsoft.identitymodel.protocols.6.15.1.nupkg.sha512",
+    "/Users/kiselevmaksim/.nuget/packages/microsoft.identitymodel.protocols.openidconnect/6.15.1/microsoft.identitymodel.protocols.openidconnect.6.15.1.nupkg.sha512",
+    "/Users/kiselevmaksim/.nuget/packages/microsoft.identitymodel.tokens/7.0.0/microsoft.identitymodel.tokens.7.0.0.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/mono.texttemplating/2.2.1/mono.texttemplating.2.2.1.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/npgsql/7.0.0/npgsql.7.0.0.nupkg.sha512",
@@ -35,9 +42,21 @@
     "/Users/kiselevmaksim/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.5.0/swashbuckle.aspnetcore.swaggergen.6.5.0.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.5.0/swashbuckle.aspnetcore.swaggerui.6.5.0.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/system.codedom/4.4.0/system.codedom.4.4.0.nupkg.sha512",
+    "/Users/kiselevmaksim/.nuget/packages/system.identitymodel.tokens.jwt/7.0.0/system.identitymodel.tokens.jwt.7.0.0.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/system.text.encodings.web/7.0.0/system.text.encodings.web.7.0.0.nupkg.sha512",
     "/Users/kiselevmaksim/.nuget/packages/system.text.json/7.0.0/system.text.json.7.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }

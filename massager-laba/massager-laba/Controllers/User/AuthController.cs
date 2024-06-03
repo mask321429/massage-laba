@@ -27,6 +27,33 @@ public class AuthController : ControllerBase
             await _authService.RegisterUser(model);
             return Ok(new { Message = "User registered successfully" });
         }
+        catch (BadHttpRequestException ex)
+        {
+            return StatusCode(400, new { Error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Error = ex.Message });
+        }
+    }
+    
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginDTO model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            await _authService.Login(model);
+            return Ok(new { Message = "User registered successfully" });
+        }
+        catch (BadHttpRequestException ex)
+        {
+            return StatusCode(400, new { Error = ex.Message });
+        }
         catch (Exception ex)
         {
             return StatusCode(500, new { Error = ex.Message });

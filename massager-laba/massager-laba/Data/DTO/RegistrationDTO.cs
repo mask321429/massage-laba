@@ -11,9 +11,8 @@ public class RegistrationDTO
     [Required]
     [StringLength(100, MinimumLength = 6)]
     public string Password { get; set; }
-    
-    public DateTime BirthDate { get; set; }
-
     [Required]
-    public IFormFile Avatar { get; set; }
+    public DateTime BirthDate { get; set; }
+    
+    public IFormFile? Avatar { get; set; }
 }

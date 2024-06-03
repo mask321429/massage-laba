@@ -4,6 +4,6 @@ namespace massager_laba.Interface;
 
 public interface IAuthService
 {
-    Task RegisterUser(RegistrationDTO registrationDto);
-
+    Task<TokenDTO> RegisterUser(RegistrationDTO registrationDto);
+    Task<TokenDTO> Login(LoginDTO loginDto);
 }

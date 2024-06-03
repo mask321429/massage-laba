@@ -2,7 +2,9 @@ using Amazon.S3;
 using massager_laba.Data;
 using massager_laba.Interface;
 using massager_laba.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +25,20 @@ builder.Services.AddAWSService<IAmazonS3>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = TokenConfigurations.Issuer,
+            ValidateAudience = true,
+            ValidAudience = TokenConfigurations.Audience,
+            ValidateLifetime = true,
+            IssuerSigningKey = TokenConfigurations.GetSymmetricSecurityKey(),
+            ValidateIssuerSigningKey = true,
+        };
+    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,6 +47,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+
 
 using (var scope = app.Services.CreateScope())
 {
@@ -51,7 +69,7 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine($"Error occurred while migrating: {ex.Message}");
     }
 }
-
+app.UseCors(builder => builder.AllowAnyOrigin());
 
 
 app.UseHttpsRedirection();
