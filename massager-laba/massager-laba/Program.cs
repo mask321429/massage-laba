@@ -13,13 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-
 builder.Services.AddDbContext<DBContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Конфигурация клиента Amazon S3
 builder.Services.AddAWSService<IAmazonS3>();
-
 
 // Регистрация сервиса
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -39,6 +37,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
         };
     });
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,9 +57,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-
-
 
 using (var scope = app.Services.CreateScope())
 {
@@ -69,11 +76,12 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine($"Error occurred while migrating: {ex.Message}");
     }
 }
-app.UseCors(builder => builder.AllowAnyOrigin());
 
+app.UseCors(); // Вызовите UseCors
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication(); // Добавьте эту строку
 app.UseAuthorization();
 
 app.MapControllers();
