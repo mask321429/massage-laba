@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Arimo:wght@700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="../mainWithAutorization/main.html">
+            <img src="../logo.svg" alt="Лого" class="logo">
+        </a>
+        <div class="links">
+            <a href="../profile/profile.html" class="link current-page">Профиль</a>
+            <a href="#" class="link">Мессенджер</a>
+            <a href="#" class="link">Друзья</a>
+            <a href="#" class="link">Помощь</a>
+            <a href="#" class="link">Выход</a>
+        </div>
+    </div>
+    <div class="container" style="display: flex; align-items: center;">
+        <div>
+            <img id="profile-image" src="./no-profile-min.png" alt="./no-profile-min.png" style="width: 400px; height: 400px;">
+        </div>
+        <div style="text-align: left; margin-left: 20px; font-size: 30px;">
+            <h2 id="username"></h2>
+            <p id="birthdate"></p>
+        </div>
+    </div>
+    <script src="profile.js"></script>
+</body>
+
+</html>
