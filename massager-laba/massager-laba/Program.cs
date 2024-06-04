@@ -1,4 +1,3 @@
-using Amazon.S3;
 using massager_laba.Data;
 using massager_laba.Interface;
 using massager_laba.Services;
@@ -16,11 +15,8 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DBContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Конфигурация клиента Amazon S3
-builder.Services.AddAWSService<IAmazonS3>();
-
-// Регистрация сервиса
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
