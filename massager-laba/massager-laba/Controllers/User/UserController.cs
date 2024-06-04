@@ -21,7 +21,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            var result  =  await _userService.GetProfile(Guid.Parse(User.Identity.Name));
+            var result = await _userService.GetProfile(Guid.Parse(User.Identity.Name));
             return Ok(result);
         }
         catch (Exception e)
@@ -30,18 +30,14 @@ public class UserController : ControllerBase
             throw;
         }
     }
-    
+
     [HttpPut("profile")]
-    public async Task<IActionResult> UpdateUserProfile([FromBody] UpdateProfileDTO updateProfileDto)
+    public async Task<IActionResult> UpdateUserProfile([FromForm] UpdateProfileDTO updateProfileDto)
     {
         try
         {
-            if (User.Identity.IsAuthenticated && Guid.TryParse(User.Identity.Name, out Guid userId))
-            {
-                await _userService.UpdateProfile(userId, updateProfileDto);
-                return Ok();
-            }
-            return Unauthorized();
+            await _userService.UpdateProfile(Guid.Parse(User.Identity.Name), updateProfileDto);
+            return Ok();
         }
         catch (Exception e)
         {

@@ -1,6 +1,7 @@
 using massager_laba.Data;
 using massager_laba.Data.DTO;
 using massager_laba.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace massager_laba.Services;
 
@@ -34,7 +35,7 @@ public class UserService : IUserService
     
     public async Task UpdateProfile(Guid id, UpdateProfileDTO updateProfileDto)
     {
-        var user = await _dbContext.Users.FindAsync(id);
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
         if (user == null)
         {
             throw new KeyNotFoundException("User not found");
@@ -48,7 +49,7 @@ public class UserService : IUserService
         var avatarUrl = SaveAvatarToLocalDisk(updateProfileDto.Avatar, updateProfileDto.Login);
 
         user.Login = updateProfileDto.Login;
-        user.BirthDate = updateProfileDto.BirthDate;
+        user.BirthDate = DateTime.SpecifyKind(updateProfileDto.BirthDate, DateTimeKind.Utc);
         user.AvatarUrl = avatarUrl;
 
         _dbContext.Users.Update(user);
