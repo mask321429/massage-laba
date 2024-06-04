@@ -26,20 +26,24 @@
             <a href="#" class="link">Выход</a>
         </div>
     </div>
-    <div class="container" style="display: flex; align-items: center;">
-        <div>
-            <img id="profile-image" src="./no-profile-min.png" alt="./no-profile-min.png" style="width: 400px; height: 400px;">
+    <div class="container">
+        <div class="container2">
+            <form action="">
+                <h3>Изменение профиля</h3>
+                <label for="login">Новый логин</label>
+                <input type="text" id="loginInput" name="loginInput" placeholder="Введите новый логин" required>
+                <label for="password">Новая дата рождения</label>
+                <input type="date" id="dateInput" name="dateInput" required>
+                <label for="image">Новое фото профиля</label>
+                <input type="file" style="max-width: 500%; width: auto;" id="fileInput" name="fileInput"
+                    accept="image/*">
+                <label style="visibility: hidden;">с</label>
+                <button type="submit" id="save">Сохранить</button>
         </div>
-        <div style="text-align: left; margin-left: 20px; font-size: 30px;">
-            <div style="display: flex; align-items: center;">
-                <h2 id="username"></h2>
-                <a href="../profileEdit/profileEdit.html" id="editProfileButton" class="link" style="margin-left: 10px; margin-right: 0; font-size: 30px;">🖉</a>
-            </div>
-            <p id="birthdate"></p>
+        </form>
+        <div id="errorMessage" class="text-danger text-center"></div>
     </div>
-        </div>
-    </div>
-    <script src="profile.js"></script>
+    <script src="profileEdit.js"></script>
 </body>
 
 </html>
