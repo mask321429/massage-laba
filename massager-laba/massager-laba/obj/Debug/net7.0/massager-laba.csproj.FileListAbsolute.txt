@@ -33,7 +33,6 @@
 /Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/obj/Debug/net7.0/staticwebassets.build.json
 /Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/obj/Debug/net7.0/staticwebassets.development.json
 /Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/obj/Debug/net7.0/scopedcss/bundle/massager-laba.styles.css
-/Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.csproj.CopyComplete
 /Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.dll
 /Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/obj/Debug/net7.0/refint/massager-laba.dll
 /Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.pdb
@@ -52,3 +51,5 @@
 /Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/bin/Debug/net7.0/Microsoft.IdentityModel.Tokens.dll
 /Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/bin/Debug/net7.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.sourcelink.json
+/Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/obj/Debug/net7.0/massager.9F64DE9B.Up2Date
