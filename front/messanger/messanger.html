@@ -11,6 +11,7 @@
         href="https://fonts.googleapis.com/css2?family=Arimo:wght@700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="./messanger_style.css">
 </head>
 
 <body>
@@ -19,27 +20,16 @@
             <img src="../logo.svg" alt="Лого" class="logo">
         </a>
         <div class="links">
-            <a href="../profile/profile.html" class="link current-page">Профиль</a>
-            <a href="../messanger/messanger.html" class="link">Мессенджер</a>
+            <a href="../profile/profile.html" class="link">Профиль</a>
+            <a href="../messanger/messanger.html" class="link current-page">Мессенджер</a>
             <a href="#" class="link">Друзья</a>
             <a href="#" class="link">Помощь</a>
             <a href="#" class="link">Выход</a>
         </div>
     </div>
-    <div class="container" style="display: flex; align-items: center;">
-        <div>
-            <img id="profile-image" src="./no-profile-min.png" alt="./no-profile-min.png" style="width: 400px; height: 400px;">
-        </div>
-        <div style="text-align: left; margin-left: 20px; font-size: 30px;">
-            <div style="display: flex; align-items: center;">
-                <h2 id="username"></h2>
-                <a href="../profileEdit/profileEdit.html" id="editProfileButton" class="link" style="margin-left: 10px; margin-right: 0; font-size: 30px;">🖉</a>
-            </div>
-            <p id="birthdate"></p>
+    <div class="container" style="display: flex; align-items: center; flex-direction: column;">
     </div>
-        </div>
-    </div>
-    <script src="profile.js"></script>
+    <script src="messanger.js"></script>
 </body>
 
 </html>
