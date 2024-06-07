@@ -21,7 +21,7 @@ async function get(url, token) {
 
         document.getElementById("username").textContent = data.login;
         document.getElementById("birthdate").textContent = formattedDate;
-        document.getElementById("profile-image").alt = "./no-profile-min.png";
+        //document.getElementById("profile-image").onerror= "this.src='./no-profile-min.png'";
         if (data.avatar != null && data.avatar != ''){
             document.getElementById("profile-image").src = data.avatar;
         }

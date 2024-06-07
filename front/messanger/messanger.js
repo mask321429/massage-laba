@@ -36,10 +36,9 @@ async function get(url, token) {
       codeString += `
         <div class="messager">
             <a href="#" class="email-container">
-                <img src="${item.urlAvatar}" alt="Avatar" class="avatar">
+                <img src="${item.urlAvatar}" onerror="this.src='./no-profile-min.png'" class="avatar">
                 <div>
                     <div class="name">${item.nameUser}</div>
-                    
                     <div class="date">${date.toLocaleString(undefined, options)}</div>
                 </div>
                 ${item.isCheked ? '<div class="dot"></div>' : ''}
