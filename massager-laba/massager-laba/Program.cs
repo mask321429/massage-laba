@@ -109,28 +109,52 @@ app.Run();
 static async Task HandleWebSocketCommunication(HttpContext context, WebSocket webSocket, WebSocketConnectionManager connectionManager)
 {
     var buffer = new byte[1024 * 4];
-    WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+    WebSocketReceiveResult result;
 
-    while (!result.CloseStatus.HasValue)
+    try
     {
-        var receivedMessage = Encoding.UTF8.GetString(buffer, 0, result.Count);
-        var message = JsonSerializer.Deserialize<MessagerSocetDTO>(receivedMessage);
-        if (message != null)
+        do
         {
-            var messageService = context.RequestServices.GetRequiredService<IMeassagerService>();
-            await messageService.SendMessage(Guid.Parse(message.FromUserId), Guid.Parse(message.ToUserId), message.Content);
-            
-            var recipientSocket = connectionManager.GetSocketById(message.ToUserId.ToString());
-            if (recipientSocket != null && recipientSocket.State == WebSocketState.Open)
-            {
-                var responseMessage = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
-                await recipientSocket.SendAsync(new ArraySegment<byte>(responseMessage, 0, responseMessage.Length), WebSocketMessageType.Text, true, CancellationToken.None);
-            }
-        }
-        result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-    }
+            result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
-    var userId = context.Request.Query["userId"];
-    connectionManager.RemoveSocket(userId);
-    await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+            if (result.MessageType == WebSocketMessageType.Text)
+            {
+                var receivedMessage = Encoding.UTF8.GetString(buffer, 0, result.Count);
+                Console.WriteLine("Received: " + receivedMessage);
+                
+                var message = JsonSerializer.Deserialize<MessagerSocetDTO>(receivedMessage);
+                if (message != null)
+                {
+                    if (Guid.TryParse(message.FromUserId, out Guid fromUserId) && Guid.TryParse(message.ToUserId, out Guid toUserId))
+                    {
+                        var messageService = context.RequestServices.GetRequiredService<IMeassagerService>();
+                        await messageService.SendMessage(fromUserId, toUserId, message.Content);
+                        
+                        var recipientSocket = connectionManager.GetSocketById(message.ToUserId);
+                        if (recipientSocket != null && recipientSocket.State == WebSocketState.Open)
+                        {
+                            var responseMessage = JsonSerializer.Serialize(message);
+                            await recipientSocket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(responseMessage)), WebSocketMessageType.Text, true, CancellationToken.None);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid GUID format in message.");
+                    }
+                }
+            }
+        } while (!result.CloseStatus.HasValue);
+        
+        await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Exception in WebSocket communication: " + ex.Message);
+        await webSocket.CloseAsync(WebSocketCloseStatus.InternalServerError, "Exception in WebSocket communication", CancellationToken.None);
+    }
+    finally
+    {
+        var userId = context.Request.Query["userId"];
+        connectionManager.RemoveSocket(userId);
+    }
 }
