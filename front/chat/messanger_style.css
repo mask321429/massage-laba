@@ -1,6 +1,7 @@
 .email-container {
     display: flex;
     align-items: center;
+    flex-direction: column;
     border-radius: 20px;
     margin-bottom: 20px;
     padding: 10px;
@@ -61,11 +62,20 @@
     color: rgb(0, 0, 0);
   }
 
-.chatfield {
-  max-height: 77vh;
-  min-height: 77vh;
-  min-width: 50vw;
-  overflow-y: auto;
+  .chatfield {
+    max-height: 65vh;
+    min-height: 65vh;
+    min-width: 50vw;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(80, 80, 80);
+    border-radius: 10px;
+}
+
+.input-message {
+  margin-top: auto;
+  display: flex;
 }
 
 .chatfield::-webkit-scrollbar {
@@ -78,12 +88,13 @@
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 10px;
-  max-width: 350px;
+  max-width: 25vw;
   align-self: flex-end;
   float: right;
   clear: both;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  margin-right: 5px;
 }
 
 .message-other {
@@ -92,10 +103,24 @@
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 10px;
-  max-width: 350px;
+  max-width: 25vw;
   align-self: flex-start;
   float: left;
   clear: both;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  margin-left: 5px;
+}
+
+.send-button {
+  margin-left: 5px;
+}
+
+.chatName {
+  font-size: x-large;
+  font-weight: 500;
+  color: azure;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 10px;
 }

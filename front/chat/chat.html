@@ -29,17 +29,29 @@
     </div>
     <div class="container" style="display: flex; align-items: center; flex-direction: column;">
         <div class="messager email-container">
+            <div class="chatName" id="chatName">
+                Максим
+            </div>
             <div class="chatfield">
                 <div class="history">
                     <div class="message-my">Скинь дз по английскому, Максим</div>
-                    <div class="message-other">Нет. Делай сам. Ты бездарь, чтоб ты 2 получил</div>
+                    <div class="message-other">Нет. Делай сам. Ты бездарь, чтоб ты 2 получил. Мне никогда тебя не простить</div>
                     <div class="message-other">Гулять пошли</div>
                     <div class="message-my">Нет</div>
-                    <div class="message-my">Я обиделся</div>
-                </div>
-                <div class="web-socket">
+                    <div class="message-my">Я обиделся. Завтра можем девочек снять, а сегодня только сосика пати</div>
+                    <div class="message-my">Я обиделся. Завтра можем девочек снять, а сегодня только сосика пати</div>
+                    <div class="message-my">Я обиделся. Завтра можем девочек снять, а сегодня только сосика пати</div>
+                    <div class="message-my">Я обиделся. Завтра можем девочек снять, а сегодня только сосика пати</div>
 
                 </div>
+                <div id="web-socket">
+                </div>
+            </div>
+            <div class="input-message">
+                <input type="text" id="messageInput" placeholder="Type your message here..." class="message-input" style="min-width: 47vw; margin-top: 15px;">
+                <button class="send-button" style="margin-top: 15px;" onclick="sendMessage()">
+                    <img src="send.svg" alt="Send" style="width: 2wh; height: 2vh;">
+                </button>
             </div>
         </div>
     </div>

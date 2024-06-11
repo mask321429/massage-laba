@@ -35,7 +35,7 @@ async function get(url, token) {
       const date = new Date(item.dateTimeLastLetter);
       codeString += `
         <div class="messager">
-            <a href="../chat/chat.html?From=${item.idUserFrom}&To=${item.idUserWhere}" class="email-container">
+            <a href="../chat/chat.html?Name=${item.nameUser}&From=${item.idUserFrom}&To=${item.idUserWhere}" class="email-container">
                 <img src="${item.urlAvatar}" onerror="this.src='./no-profile-min.png'" class="avatar">
                 <div>
                     <div class="name">${item.nameUser}</div>
