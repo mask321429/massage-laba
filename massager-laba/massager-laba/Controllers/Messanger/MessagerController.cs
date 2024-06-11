@@ -13,7 +13,7 @@ public class MessagerController : ControllerBase
     {
         _messageService = meassagerService;
     }
-    [HttpPost("people")]
+    [HttpGet("people")]
     public async Task<IActionResult> GetMessage()
     {
         try

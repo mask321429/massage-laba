@@ -46,6 +46,7 @@ public class MessagerService : IMeassagerService
                 {
                     NameUser = user.Login,
                     IdUserWhere = message.IdUserWhere,
+                    IdUserFrom = message.IdUserFrom,
                     DateTimeLastLetter = message.LastLetter,
                     UrlAvatar = user.AvatarUrl,
                     IsCheked = message.IsCheked
