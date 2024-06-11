@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="72be360c-5e39-4735-844c-646bf9caa321" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/Controllers/Messanger/MessagerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/Controllers/Messanger/MessagerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/Data/DBContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/Data/DBContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/Data/DTO/MessagerSocetDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/Data/DTO/MessagerSocetDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/Data/DTO/SendMessageRequestDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/Data/DTO/SendMessageRequestDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/Data/Model/MessageInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/Data/Model/MessageInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/Interface/IMeassagerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/Interface/IMeassagerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/Migrations/DBContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/Migrations/DBContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/Services/MessagerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/Services/MessagerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/Services/WebSocketConnectionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/Services/WebSocketConnectionManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/bin/Debug/net7.0/massager-laba.dll" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/bin/Debug/net7.0/massager-laba.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/bin/Debug/net7.0/massager-laba.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/bin/Debug/net7.0/massager-laba.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.dll" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/massager-laba.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/ref/massager-laba.dll" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/ref/massager-laba.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/refint/massager-laba.dll" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/Debug/net7.0/refint/massager-laba.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/massager-laba.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/massager-laba.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/massager-laba.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/massager-laba.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/massager-laba/massager-laba/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/massager-laba/massager-laba/obj/rider.project.restore.info" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2hjBW16eixXEQV7O8AEB7gMLfGt" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master-backend",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "/Users/kiselevmaksim/Library/Application Support/JetBrains/Rider2023.3/resharper-host/DecompilerCache",
+      "/Users/kiselevmaksim/Library/Application Support/JetBrains/Rider2023.3/resharper-host/SourcesCache",
+      "/Users/kiselevmaksim/.local/share/Symbols/src"
+    ]
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="72be360c-5e39-4735-844c-646bf9caa321" name="Changes" comment="" />
+      <created>1718097633693</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1718097633693</updated>
+      <workItem from="1718097634734" duration="11000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

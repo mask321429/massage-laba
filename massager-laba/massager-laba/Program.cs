@@ -4,17 +4,19 @@ using massager_laba.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Net.WebSockets;
+using System.Text;
+using System.Text.Json;
+using massager_laba.Data.DTO;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Register services in the DI container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
 builder.Services.AddDbContext<DBContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddSingleton<WebSocketConnectionManager>();
+builder.Services.AddTransient<IMeassagerService, MessagerService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddEndpointsApiExplorer();
@@ -33,15 +35,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
         };
     });
-
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddDefaultPolicy(policy =>
     {
-        builder
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
@@ -57,29 +57,76 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    try
-    {
-        var dbContext = services.GetRequiredService<DBContext>();
-        dbContext.Database.Migrate();
-        if (!dbContext.Database.GetPendingMigrations().Any())
-        {
-            dbContext.Database.EnsureCreated(); 
-            Console.WriteLine("Automatically applied migration.");
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error occurred while migrating: {ex.Message}");
-    }
+    var dbContext = services.GetRequiredService<DBContext>();
+    dbContext.Database.Migrate(); // Automatically apply pending migrations.
 }
 
-app.UseCors(); // Вызовите UseCors
+app.UseCors();
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // Добавьте эту строку
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseWebSockets();
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/ws")
+    {
+        if (context.WebSockets.IsWebSocketRequest)
+        {
+            var userId = context.Request.Query["userId"];
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                context.Response.StatusCode = 400;
+                return;
+            }
+            WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+            var connectionManager = context.RequestServices.GetRequiredService<WebSocketConnectionManager>();
+            connectionManager.AddSocket(userId, webSocket);
+            await HandleWebSocketCommunication(context, webSocket, connectionManager);
+        }
+        else
+        {
+            context.Response.StatusCode = 400;
+        }
+    }
+    else
+    {
+        await next();
+    }
+});
+
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
+
 app.Run();
+
+static async Task HandleWebSocketCommunication(HttpContext context, WebSocket webSocket, WebSocketConnectionManager connectionManager)
+{
+    var buffer = new byte[1024 * 4];
+    WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+
+    while (!result.CloseStatus.HasValue)
+    {
+        var receivedMessage = Encoding.UTF8.GetString(buffer, 0, result.Count);
+        var message = JsonSerializer.Deserialize<MessagerSocetDTO>(receivedMessage);
+        if (message != null)
+        {
+            var messageService = context.RequestServices.GetRequiredService<IMeassagerService>();
+            await messageService.SendMessage(Guid.Parse(message.FromUserId), Guid.Parse(message.ToUserId), message.Content);
+        }
+        result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+    }
+
+    var userId = context.Request.Query["userId"];
+    connectionManager.RemoveSocket(userId);
+    await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+}

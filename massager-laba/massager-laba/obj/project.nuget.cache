@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "1g/nJfR6ahA=",
+  "dgSpecHash": "HbZPPUzTQSDhIRGCk3HcZiEv9ejDPQYwHEUMiTxl8MMpaDroFRfmF9YBZCwfE7bLI7ZVOJ5eoCZjMuMQCyS9IA==",
   "success": true,
   "projectFilePath": "/Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/massager-laba.csproj",
   "expectedPackageFiles": [
@@ -55,7 +55,7 @@
       "code": "NU1902",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "У пакета \"System.IdentityModel.Tokens.Jwt\" 7.0.0 есть известная уязвимость https://github.com/advisories/GHSA-59j7-ghrg-fj52 (уровень серьезности: средний уровень)",
+      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
       "libraryId": "System.IdentityModel.Tokens.Jwt",
       "targetGraphs": [
         "net7.0"
