@@ -68,10 +68,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
-
 app.UseWebSockets();
-
 app.Use(async (context, next) =>
 {
     if (context.Request.Path == "/ws")
@@ -122,6 +119,13 @@ static async Task HandleWebSocketCommunication(HttpContext context, WebSocket we
         {
             var messageService = context.RequestServices.GetRequiredService<IMeassagerService>();
             await messageService.SendMessage(Guid.Parse(message.FromUserId), Guid.Parse(message.ToUserId), message.Content);
+            
+            var recipientSocket = connectionManager.GetSocketById(message.ToUserId.ToString());
+            if (recipientSocket != null && recipientSocket.State == WebSocketState.Open)
+            {
+                var responseMessage = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
+                await recipientSocket.SendAsync(new ArraySegment<byte>(responseMessage, 0, responseMessage.Length), WebSocketMessageType.Text, true, CancellationToken.None);
+            }
         }
         result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
     }
