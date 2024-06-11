@@ -1,7 +1,7 @@
 var token = localStorage.getItem('token');
 
 async function profilePut(data) {
-  const url = 'https://localhost:44305/api/User/profile';
+  const url = 'http://localhost:5294/api/User/profile';
   const formData = new FormData();
   formData.append('Login', data.login);
   formData.append('BirthDate', data.date);

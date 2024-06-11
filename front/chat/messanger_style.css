@@ -60,3 +60,42 @@
   .messager a {
     color: rgb(0, 0, 0);
   }
+
+.chatfield {
+  max-height: 77vh;
+  min-height: 77vh;
+  min-width: 50vw;
+  overflow-y: auto;
+}
+
+.chatfield::-webkit-scrollbar {
+  width: 0;
+}
+
+.message-my {
+  background-color: rgb(175, 175, 175);
+  color: rgb(0, 0, 0);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-width: 350px;
+  align-self: flex-end;
+  float: right;
+  clear: both;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.message-other {
+  background-color: rgb(61, 61, 61);
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-width: 350px;
+  align-self: flex-start;
+  float: left;
+  clear: both;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}

@@ -1,5 +1,5 @@
 async function registerPost(data) {
-  const url = 'https://localhost:44305/api/Auth/register';
+  const url = 'http://localhost:5294/api/Auth/register';
 
   const formData = new FormData();
   formData.append('Login', data.login);

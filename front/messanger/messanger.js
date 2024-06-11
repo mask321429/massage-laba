@@ -1,7 +1,7 @@
 var token = localStorage.getItem('token');
 const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false };
 
-const url = `https://localhost:44305/people`;
+const url = `http://localhost:5294/api/Messager/people`;
 get(url, token)
 
 async function get(url, token) {
@@ -35,7 +35,7 @@ async function get(url, token) {
       const date = new Date(item.dateTimeLastLetter);
       codeString += `
         <div class="messager">
-            <a href="#" class="email-container">
+            <a href="../chat/chat.html?From=${item.idUserFrom}&To=${item.idUserWhere}" class="email-container">
                 <img src="${item.urlAvatar}" onerror="this.src='./no-profile-min.png'" class="avatar">
                 <div>
                     <div class="name">${item.nameUser}</div>

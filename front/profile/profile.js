@@ -1,6 +1,6 @@
 var token = localStorage.getItem('token');
 
-const url = `https://localhost:44305/profile`;
+const url = `http://localhost:5294/profile`;
 get(url, token)
 
 async function get(url, token) {
