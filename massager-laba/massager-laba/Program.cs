@@ -58,7 +58,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<DBContext>();
-    dbContext.Database.Migrate(); // Automatically apply pending migrations.
+    dbContext.Database.Migrate(); 
 }
 
 app.UseCors();
@@ -121,15 +121,17 @@ static async Task HandleWebSocketCommunication(HttpContext context, WebSocket we
             {
                 var receivedMessage = Encoding.UTF8.GetString(buffer, 0, result.Count);
                 Console.WriteLine("Received: " + receivedMessage);
-                
+
                 var message = JsonSerializer.Deserialize<MessagerSocetDTO>(receivedMessage);
                 if (message != null)
                 {
                     if (Guid.TryParse(message.FromUserId, out Guid fromUserId) && Guid.TryParse(message.ToUserId, out Guid toUserId))
                     {
+                     
                         var messageService = context.RequestServices.GetRequiredService<IMeassagerService>();
                         await messageService.SendMessage(fromUserId, toUserId, message.Content);
-                        
+
+                       
                         var recipientSocket = connectionManager.GetSocketById(message.ToUserId);
                         if (recipientSocket != null && recipientSocket.State == WebSocketState.Open)
                         {

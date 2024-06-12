@@ -32,6 +32,25 @@ public class MessagerController : ControllerBase
         }
     }
     
+    [HttpGet("history")]
+    public async Task<IActionResult> GetMessageHistory(Guid idToUser, int? count)
+    {
+        try
+        {
+            var result = await _messageService.GetHistoryMeassage(Guid.Parse(User.Identity.Name),idToUser, count);
+            return Ok(result);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return StatusCode(404, new { Error = e.Message });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
     [HttpPost("send")]
     public async Task<IActionResult> SendMessage([FromBody] SendMessageRequestDTO request)
     {

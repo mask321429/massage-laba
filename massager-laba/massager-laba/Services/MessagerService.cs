@@ -79,6 +79,53 @@ public class MessagerService : IMeassagerService
         await SaveMessage(fromUserId, toUserId, content, DateTime.UtcNow);
     }
 
+    public async Task<List<MessageHistoryDTO>> GetHistoryMeassage(Guid idFromUser, Guid idToUser, int? count)
+    {
+        int skipCount;
+    
+        if (count.HasValue)
+        {
+            skipCount = Math.Max(0, count.Value - 50);
+        }
+        else
+        {
+            skipCount = 0;
+        }
+        
+        var getHistory = await _dbContext.MessageInfos
+            .Where(x => (x.FromUserId == idFromUser && x.ToUserId == idToUser) || (x.FromUserId == idToUser && x.ToUserId == idFromUser))
+            .OrderBy(x => x.Timestamp) 
+            .Skip(skipCount)
+            .Take(50)
+            .ToListAsync();
+        
+        var getUserName = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == idToUser);
+        if (getUserName == null)
+        {
+            return new List<MessageHistoryDTO>();
+        }
+        
+        var messages = getHistory.Select(m => new Message
+        {
+            WhoseMessage = m.FromUserId,
+            DateTimeMessage = m.Timestamp,
+            Text = m.Content
+        }).ToList();
+        
+        var result = new MessageHistoryDTO
+        {
+            Name = getUserName.Login,
+            MyId = idFromUser,
+            IdWhere = idToUser,
+            Messages = messages
+        };
+        
+        
+        
+        return new List<MessageHistoryDTO> { result };
+    }
+
+
     public async Task SaveMessage(Guid fromUserId, Guid toUserId, string content, DateTime timestamp)
     {
         var message = new MessageInfo
@@ -91,6 +138,14 @@ public class MessagerService : IMeassagerService
 
         await _dbContext.MessageInfos.AddAsync(message);
         await _dbContext.SaveChangesAsync();
+        var chengStatus = _dbContext.MessagerModels.FirstOrDefault(x =>
+            (x.IdUserFrom == fromUserId && x.IdUserWhere == toUserId) ||
+            (x.IdUserFrom == toUserId && x.IdUserWhere == fromUserId));
+        chengStatus.IsCheked = true;
+        _dbContext.MessagerModels.Update(chengStatus);
+        _dbContext.SaveChangesAsync();
+
+
     }
 
 
