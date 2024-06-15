@@ -1958,24 +1958,27 @@
     ]
   },
   "packageFolders": {
-    "/Users/kiselevmaksim/.nuget/packages/": {}
+    "C:\\Users\\ctrht\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/massager-laba.csproj",
+      "projectUniqueName": "D:\\Файлы\\Документы\\Университет\\HITs\\2 курс\\2 семестр\\Проектная разработка Back\\Git\\massage-laba\\massager-laba\\massager-laba\\massager-laba.csproj",
       "projectName": "massager-laba",
-      "projectPath": "/Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/massager-laba.csproj",
-      "packagesPath": "/Users/kiselevmaksim/.nuget/packages/",
-      "outputPath": "/Users/kiselevmaksim/Documents/massage-laba/massager-laba/massager-laba/obj/",
+      "projectPath": "D:\\Файлы\\Документы\\Университет\\HITs\\2 курс\\2 семестр\\Проектная разработка Back\\Git\\massage-laba\\massager-laba\\massager-laba\\massager-laba.csproj",
+      "packagesPath": "C:\\Users\\ctrht\\.nuget\\packages\\",
+      "outputPath": "D:\\Файлы\\Документы\\Университет\\HITs\\2 курс\\2 семестр\\Проектная разработка Back\\Git\\massage-laba\\massager-laba\\massager-laba\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/kiselevmaksim/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\ctrht\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2048,20 +2051,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[7.0.20, 7.0.20]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.osx-arm64",
-            "version": "[7.0.20, 7.0.20]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[7.0.20, 7.0.20]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -2070,7 +2059,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.301/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   },

@@ -74,8 +74,7 @@ public class MessagerService : IMeassagerService
             await socket.SendAsync(new ArraySegment<byte>(messageBytes, 0, messageBytes.Length),
                 System.Net.WebSockets.WebSocketMessageType.Text, true, System.Threading.CancellationToken.None);
         }
-
-        await SaveMessage(fromUserId, toUserId, content, DateTime.UtcNow);
+//        await SaveMessage(fromUserId, toUserId, content, DateTime.UtcNow);
         var getAllMyMessage = await _dbContext.MessagerModels.FirstOrDefaultAsync(x =>
             (x.IdUserFrom == fromUserId && x.IdUserWhere == toUserId) ||
             (x.IdUserFrom == toUserId && x.IdUserWhere == fromUserId));
@@ -94,12 +93,15 @@ public class MessagerService : IMeassagerService
             {
                 LastLetter = DateTime.UtcNow,
                 IsCheked = false,
-                IdUserFrom = fromUserId,
-                IdUserWhere = toUserId,
+                IdUserFrom = toUserId,
+                IdUserWhere = fromUserId,
                 Id = Guid.NewGuid()
             };
             _dbContext.Add(addNewMessage);
             _dbContext.Add(addNewMessageTwo);
+            
+            await SaveMessage(fromUserId, toUserId, content, DateTime.UtcNow);
+            
             await _dbContext.SaveChangesAsync();
         }
     }
@@ -147,8 +149,11 @@ public class MessagerService : IMeassagerService
         };
         var messagesPull = await _dbContext.MessagerModels
             .FirstOrDefaultAsync(x => x.IdUserFrom == idFromUser && x.IdUserWhere == idToUser);
-        messagesPull.IsCheked = true;
-        _dbContext.MessagerModels.Update(messagesPull);
+        if (messagesPull != null)
+        {
+            messagesPull.IsCheked = true;
+            _dbContext.MessagerModels.Update(messagesPull); 
+        }
         await _dbContext.SaveChangesAsync();
         
         
@@ -172,7 +177,7 @@ public class MessagerService : IMeassagerService
             (x.IdUserFrom == toUserId && x.IdUserWhere == fromUserId));
         var chengStatusTwo = _dbContext.MessagerModels.FirstOrDefault(x =>
             (x.IdUserFrom == fromUserId && x.IdUserWhere == toUserId));
-        chengStatus.IsCheked = true;
+        chengStatus.IsCheked = false;
         chengStatusTwo.IsCheked = true;
         _dbContext.MessagerModels.Update(chengStatus);
         _dbContext.MessagerModels.Update(chengStatusTwo);
