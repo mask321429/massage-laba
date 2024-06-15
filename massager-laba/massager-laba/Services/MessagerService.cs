@@ -100,10 +100,9 @@ public class MessagerService : IMeassagerService
             _dbContext.Add(addNewMessage);
             _dbContext.Add(addNewMessageTwo);
             
-            await SaveMessage(fromUserId, toUserId, content, DateTime.UtcNow);
-            
             await _dbContext.SaveChangesAsync();
         }
+        await SaveMessage(fromUserId, toUserId, content, DateTime.UtcNow);
     }
 
     public async Task<List<MessageHistoryDTO>> GetHistoryMeassage(Guid idFromUser, Guid idToUser, int? count)
