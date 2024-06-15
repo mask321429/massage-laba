@@ -4,7 +4,7 @@ namespace massager_laba.Interface;
 
 public interface IUserService
 {
-    Task<ProfileDTO>  GetProfile(Guid id);
+    Task<List<ProfileDTO>>  GetProfile(Guid? id, string? name);
     Task UpdateProfile(Guid id, UpdateProfileDTO updateProfileDto);
 
 }

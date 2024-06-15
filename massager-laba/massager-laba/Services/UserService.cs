@@ -1,5 +1,6 @@
 using massager_laba.Data;
 using massager_laba.Data.DTO;
+using massager_laba.Data.Model;
 using massager_laba.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,23 +15,33 @@ public class UserService : IUserService
         _dbContext = dbContext;
     }
 
-    public async Task<ProfileDTO> GetProfile(Guid id)
+    public async Task<List<ProfileDTO>> GetProfile(Guid? id, string? name)
     {
-        var user = await _dbContext.Users.FindAsync(id);
-        if (user == null)
+        IQueryable<UserModel> query = _dbContext.Users;
+        
+        if (id != null)
         {
-            throw new Exception("User not found");
+            query = query.Where(u => u.Id == id);
         }
-
-        var profile = new ProfileDTO
+        
+        List<UserModel> users = await query.ToListAsync();
+        
+        if (!string.IsNullOrEmpty(name))
+        {
+            users = users.Where(u => u.Login.ToLower().Contains(name.ToLower())).ToList();
+        }
+        
+        var profiles = users.Select(user => new ProfileDTO
         {
             Login = user.Login,
             DateBirth = user.BirthDate,
             Avatar = user.AvatarUrl
-        };
+        }).ToList();
 
-        return profile;
+        return profiles;
     }
+
+
     
     
     public async Task UpdateProfile(Guid id, UpdateProfileDTO updateProfileDto)

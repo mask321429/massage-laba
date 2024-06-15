@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("massager-laba")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4a4402a327a29cdd7247128b5f212e221989c555")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9415efcffc7b592e17733b4db0749c71c73d3f49")]
 [assembly: System.Reflection.AssemblyProductAttribute("massager-laba")]
 [assembly: System.Reflection.AssemblyTitleAttribute("massager-laba")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
