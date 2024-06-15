@@ -17,7 +17,7 @@ async function get(url, token) {
         console.log(data);
         data.sort((a, b) => {
           if (a.isCheked !== b.isCheked) {
-              return a.isCheked ? -1 : 1;
+              return a.isCheked ? 1 : -1;
           } else {
               return new Date(b.dateTimeLastLetter) - new Date(a.dateTimeLastLetter);
           }
@@ -41,7 +41,7 @@ async function get(url, token) {
                     <div class="name">${item.nameUser}</div>
                     <div class="date">${date.toLocaleString(undefined, options)}</div>
                 </div>
-                ${item.isCheked ? '<div class="dot"></div>' : ''}
+                ${item.isCheked ? '' : '<div class="dot"></div>'}
             </a>
         </div>
         `;

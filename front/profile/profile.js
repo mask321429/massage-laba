@@ -15,15 +15,15 @@ async function get(url, token) {
         console.log(url);
         console.log(data);
 
-        const date = new Date(data.dateBirth);
+        const date = new Date(data[0].dateBirth);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         const formattedDate = date.toLocaleDateString('ru-RU', options);
 
-        document.getElementById("username").textContent = data.login;
+        document.getElementById("username").textContent = data[0].login;
         document.getElementById("birthdate").textContent = formattedDate;
         //document.getElementById("profile-image").onerror= "this.src='./no-profile-min.png'";
-        if (data.avatar != null && data.avatar != ''){
-            document.getElementById("profile-image").src = data.avatar;
+        if (data[0].avatar != null && data[0].avatar != ''){
+            document.getElementById("profile-image").src = data[0].avatar;
         }
       })
       .catch(error => {
