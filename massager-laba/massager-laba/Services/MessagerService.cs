@@ -21,7 +21,8 @@ public class MessagerService : IMeassagerService
     public async Task<List<MessagerDTO>> GetMyMessager(Guid id)
     {
         var messages = await _dbContext.MessagerModels
-            .Where(x => x.IdUserFrom == id)
+            .Where(x => (x.IdUserWhere == id)  ||
+                       (x.IdUserFrom == id))
             .ToListAsync();
 
         if (messages == null || messages.Count == 0)
@@ -90,7 +91,16 @@ public class MessagerService : IMeassagerService
                 IdUserWhere = toUserId,
                 Id = Guid.NewGuid()
             };
+            var addNewMessageTwo = new MessagerModel()
+            {
+                LastLetter = DateTime.UtcNow,
+                IsCheked = false,
+                IdUserFrom = fromUserId,
+                IdUserWhere = toUserId,
+                Id = Guid.NewGuid()
+            };
             _dbContext.Add(addNewMessage);
+            _dbContext.Add(addNewMessageTwo);
             await _dbContext.SaveChangesAsync();
         }
     }
@@ -155,10 +165,13 @@ public class MessagerService : IMeassagerService
         await _dbContext.MessageInfos.AddAsync(message);
         await _dbContext.SaveChangesAsync();
         var chengStatus = _dbContext.MessagerModels.FirstOrDefault(x =>
-            (x.IdUserFrom == fromUserId && x.IdUserWhere == toUserId) ||
             (x.IdUserFrom == toUserId && x.IdUserWhere == fromUserId));
+        var chengStatusTwo = _dbContext.MessagerModels.FirstOrDefault(x =>
+            (x.IdUserFrom == fromUserId && x.IdUserWhere == toUserId));
         chengStatus.IsCheked = true;
+        chengStatusTwo.IsCheked = true;
         _dbContext.MessagerModels.Update(chengStatus);
-        _dbContext.SaveChangesAsync();
+        _dbContext.MessagerModels.Update(chengStatusTwo);
+        await _dbContext.SaveChangesAsync();
     }
 }
