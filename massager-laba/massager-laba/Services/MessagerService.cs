@@ -28,13 +28,13 @@ public class MessagerService : IMeassagerService
         {
             throw new KeyNotFoundException("Переписки не найдены");
         }
-        
+
         var userIds = messages.Select(m => m.IdUserWhere).Distinct().ToList();
 
         var users = await _dbContext.Users
             .Where(u => userIds.Contains(u.Id))
             .ToListAsync();
-        
+
         var result = new List<MessagerDTO>();
 
         foreach (var message in messages)
@@ -56,7 +56,7 @@ public class MessagerService : IMeassagerService
 
         return result;
     }
-    
+
     public async Task SendMessage(Guid fromUserId, Guid toUserId, string content)
     {
         var socket = _connectionManager.GetSocketById(toUserId.ToString());
@@ -69,20 +69,36 @@ public class MessagerService : IMeassagerService
                 Timestamp = DateTime.UtcNow
             };
 
-            var messageBytes = System.Text.Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(messageObject));
-            await socket.SendAsync(new ArraySegment<byte>(messageBytes, 0, messageBytes.Length), System.Net.WebSockets.WebSocketMessageType.Text, true, System.Threading.CancellationToken.None);
+            var messageBytes =
+                System.Text.Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(messageObject));
+            await socket.SendAsync(new ArraySegment<byte>(messageBytes, 0, messageBytes.Length),
+                System.Net.WebSockets.WebSocketMessageType.Text, true, System.Threading.CancellationToken.None);
         }
-        else
-        {
-        }
-        
+
         await SaveMessage(fromUserId, toUserId, content, DateTime.UtcNow);
+        var getAllMyMessage = await _dbContext.MessagerModels.FirstOrDefaultAsync(x =>
+            (x.IdUserFrom == fromUserId && x.IdUserWhere == toUserId) ||
+            (x.IdUserFrom == toUserId && x.IdUserWhere == fromUserId));
+
+        if (getAllMyMessage == null)
+        {
+            var addNewMessage = new MessagerModel()
+            {
+                LastLetter = DateTime.UtcNow,
+                IsCheked = false,
+                IdUserFrom = fromUserId,
+                IdUserWhere = toUserId,
+                Id = Guid.NewGuid()
+            };
+            _dbContext.Add(addNewMessage);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 
     public async Task<List<MessageHistoryDTO>> GetHistoryMeassage(Guid idFromUser, Guid idToUser, int? count)
     {
         int skipCount;
-    
+
         if (count.HasValue)
         {
             skipCount = Math.Max(0, count.Value - 50);
@@ -91,27 +107,28 @@ public class MessagerService : IMeassagerService
         {
             skipCount = 0;
         }
-        
+
         var getHistory = await _dbContext.MessageInfos
-            .Where(x => (x.FromUserId == idFromUser && x.ToUserId == idToUser) || (x.FromUserId == idToUser && x.ToUserId == idFromUser))
-            .OrderBy(x => x.Timestamp) 
+            .Where(x => (x.FromUserId == idFromUser && x.ToUserId == idToUser) ||
+                        (x.FromUserId == idToUser && x.ToUserId == idFromUser))
+            .OrderByDescending(x => x.Timestamp)
             .Skip(skipCount)
             .Take(50)
             .ToListAsync();
-        
+
         var getUserName = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == idToUser);
         if (getUserName == null)
         {
             return new List<MessageHistoryDTO>();
         }
-        
+
         var messages = getHistory.Select(m => new Message
         {
             WhoseMessage = m.FromUserId,
             DateTimeMessage = m.Timestamp,
             Text = m.Content
         }).ToList();
-        
+
         var result = new MessageHistoryDTO
         {
             Name = getUserName.Login,
@@ -119,9 +136,8 @@ public class MessagerService : IMeassagerService
             IdWhere = idToUser,
             Messages = messages
         };
-        
-        
-        
+
+
         return new List<MessageHistoryDTO> { result };
     }
 
@@ -144,9 +160,5 @@ public class MessagerService : IMeassagerService
         chengStatus.IsCheked = true;
         _dbContext.MessagerModels.Update(chengStatus);
         _dbContext.SaveChangesAsync();
-
-
     }
-
-
 }
