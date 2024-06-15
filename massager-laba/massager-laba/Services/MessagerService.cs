@@ -21,8 +21,7 @@ public class MessagerService : IMeassagerService
     public async Task<List<MessagerDTO>> GetMyMessager(Guid id)
     {
         var messages = await _dbContext.MessagerModels
-            .Where(x => (x.IdUserWhere == id)  ||
-                       (x.IdUserFrom == id))
+            .Where(x => x.IdUserFrom == id)
             .ToListAsync();
 
         if (messages == null || messages.Count == 0)
@@ -146,8 +145,13 @@ public class MessagerService : IMeassagerService
             IdWhere = idToUser,
             Messages = messages
         };
-
-
+        var messagesPull = await _dbContext.MessagerModels
+            .FirstOrDefaultAsync(x => x.IdUserFrom == idFromUser && x.IdUserWhere == idToUser);
+        messagesPull.IsCheked = true;
+        _dbContext.MessagerModels.Update(messagesPull);
+        await _dbContext.SaveChangesAsync();
+        
+        
         return new List<MessageHistoryDTO> { result };
     }
 
