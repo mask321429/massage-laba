@@ -6,7 +6,7 @@ let myId;
 const to = urlParams.get('To');
 console.log('To:', to);
 
-const url = `http://localhost:5294/api/Messager/history?idToUser=${to}&count=50`;
+const url = `http://localhost:5294/api/Messager/history?idToUser=${to}`;
 getHistory(url, token);
 
 const messagesContainer = document.getElementById('web-socket');
@@ -26,7 +26,7 @@ async function connectWebSocket() {
 
     socket.onmessage = function (event) {
         const data = JSON.parse(event.data);
-        displayMessage(data.Content, "message-other");
+        displayMessageSocket(data.Content, "message-other");
     };
 
     socket.onclose = function (event) {
@@ -47,7 +47,7 @@ async function sendMessage() {
             ToUserId: to,
             Content: message
         }));
-        displayMessage(message, "message-my");
+        displayMessageSocket(message, "message-my");
     } else {
         console.log('WebSocket is not connected');
     }
@@ -57,12 +57,34 @@ async function displayMessage(message, user) {
     const messageElement = document.createElement('div');
     messageElement.textContent = message;
     messageElement.classList.add(user);
+
+    //messagesContainer.appendChild(messageElement);
+    const container = document.querySelector('.history');
+    container.insertBefore(messageElement, container.firstChild);
+}
+
+async function displayMessageSocket(message, user) {
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message;
+    messageElement.classList.add(user);
+
     messagesContainer.appendChild(messageElement);
-    const container = document.querySelector('.chatfield');
-    container.scrollTop = container.scrollHeight;
+    const container = document.querySelector('.web-socket');
+
+    const chatfield = document.querySelector('.chatfield'); 
+    chatfield.scrollTop = chatfield.scrollHeight;
 }
 
 async function getHistory(url, token) {
+    const urlParams = new URLSearchParams(url);
+    const count = urlParams.get('count');
+    console.log('count:', count);
+
+    const container = document.querySelector('.chatfield');
+
+    const nowPosition = container.scrollHeight;
+    console.log('СтараяВысота:', nowPosition);
+
     return fetch(url, {
         method: 'GET',
         headers: new Headers({
@@ -85,8 +107,17 @@ async function getHistory(url, token) {
                     displayMessage(element.text, "message-other");
                 }
             });
-            connectWebSocket();
 
+            const newPosition = container.scrollHeight - nowPosition;
+
+            if (count == null){
+                const chatfield = document.querySelector('.chatfield');
+                chatfield.scrollTop = chatfield.scrollHeight;
+                connectWebSocket();
+            } else {
+                container.scrollTop = newPosition; 
+                console.log('Позиция сейчас:', newPosition);
+            }
         })
         .catch(error => {
             console.error('Ошибка', error);
@@ -97,5 +128,17 @@ const chatfield = document.querySelector('.chatfield');
 chatfield.addEventListener('scroll', function() {
     if (chatfield.scrollTop === 0) {
         console.log('Пользователь прокрутил содержимое .chatfield вверх');
+
+        var history = document.querySelector('.history');
+        var divHistory = history.getElementsByTagName('div');
+        var divCountH = divHistory.length;
+
+        var socket = document.querySelector('.web-socket');
+        var divSocket = socket.getElementsByTagName('div');
+        var divCountS = divSocket.length;
+
+        console.log(divCountH+divCountS);
+
+        getHistory(`http://localhost:5294/api/Messager/history?idToUser=${to}&count=${divCountH+divCountS+50}`, token);
     }
 });
