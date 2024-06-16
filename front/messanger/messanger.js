@@ -33,10 +33,13 @@ async function get(url, token) {
     let codeString = '';
     data.forEach(item => {
       const date = new Date(item.dateTimeLastLetter);
+      const pathParts = item.urlAvatar.split('\\');
+      const photoIndex = pathParts.indexOf('Фоточки');
+      const relativePath = '../../'.repeat(pathParts.length - photoIndex - 1) + pathParts.slice(photoIndex).join('/');
       codeString += `
         <div class="messager">
             <a href="../chat/chat.html?&To=${item.idUserWhere}" class="email-container">
-                <img src="${item.urlAvatar}" onerror="this.src='./no-profile-min.png'" class="avatar">
+                <img src="${relativePath}" onerror="this.src='./no-profile-min.png'" class="avatar">
                 <div>
                     <div class="name">${item.nameUser}</div>
                     <div class="date">${date.toLocaleString(undefined, options)}</div>

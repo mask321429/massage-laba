@@ -23,7 +23,11 @@ async function get(url, token) {
         document.getElementById("birthdate").textContent = formattedDate;
         //document.getElementById("profile-image").onerror= "this.src='./no-profile-min.png'";
         if (data[0].avatar != null && data[0].avatar != ''){
-            document.getElementById("profile-image").src = data[0].avatar;
+          const pathParts = data[0].avatar.split('\\');
+          const photoIndex = pathParts.indexOf('Фоточки');
+          const relativePath = '../../'.repeat(pathParts.length - photoIndex - 1) + pathParts.slice(photoIndex).join('/');
+          document.getElementById("profile-image").src = relativePath;
+          console.log(relativePath);
         }
       })
       .catch(error => {
