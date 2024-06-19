@@ -1,3 +1,5 @@
+using massager_laba.Data.Enum;
+
 namespace massager_laba.Data.DTO;
 
 public class MessageHistoryDTO
@@ -13,4 +15,5 @@ public class Message
     public Guid WhoseMessage { get; set; }
     public DateTime DateTimeMessage { get; set; }
     public string Text { get; set; }
+    public TypeMessage TypeMessage { get; set; }
 }

@@ -129,7 +129,7 @@ static async Task HandleWebSocketCommunication(HttpContext context, WebSocket we
                     {
                      
                         var messageService = context.RequestServices.GetRequiredService<IMeassagerService>();
-                        await messageService.SendMessage(fromUserId, toUserId, message.Content);
+                        await messageService.SendMessage(fromUserId, toUserId, message.Content, message.TypeMessage);
 
                        
                         var recipientSocket = connectionManager.GetSocketById(message.ToUserId);

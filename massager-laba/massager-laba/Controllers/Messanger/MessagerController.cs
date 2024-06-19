@@ -59,7 +59,7 @@ public class MessagerController : ControllerBase
             return BadRequest("Invalid request payload");
         }
 
-        await _messageService.SendMessage(request.FromUserId = Guid.Parse(User.Identity.Name), request.ToUserId, request.Content);
+        await _messageService.SendMessage(request.FromUserId = Guid.Parse(User.Identity.Name), request.ToUserId, request.Content, request.TypeMessage);
 
         return Ok("Message sent");
     }

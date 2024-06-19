@@ -1,5 +1,6 @@
 using massager_laba.Data;
 using massager_laba.Data.DTO;
+using massager_laba.Data.Enum;
 using massager_laba.Data.Model;
 using massager_laba.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -57,7 +58,7 @@ public class MessagerService : IMeassagerService
         return result;
     }
 
-    public async Task SendMessage(Guid fromUserId, Guid toUserId, string content)
+    public async Task SendMessage(Guid fromUserId, Guid toUserId, string content, TypeMessage typeMessage)
     {
         var socket = _connectionManager.GetSocketById(toUserId.ToString());
         if (socket != null && socket.State == System.Net.WebSockets.WebSocketState.Open)
@@ -74,6 +75,7 @@ public class MessagerService : IMeassagerService
             await socket.SendAsync(new ArraySegment<byte>(messageBytes, 0, messageBytes.Length),
                 System.Net.WebSockets.WebSocketMessageType.Text, true, System.Threading.CancellationToken.None);
         }
+
 //        await SaveMessage(fromUserId, toUserId, content, DateTime.UtcNow);
         var getAllMyMessage = await _dbContext.MessagerModels.FirstOrDefaultAsync(x =>
             (x.IdUserFrom == fromUserId && x.IdUserWhere == toUserId) ||
@@ -87,7 +89,8 @@ public class MessagerService : IMeassagerService
                 IsCheked = false,
                 IdUserFrom = fromUserId,
                 IdUserWhere = toUserId,
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
+                TypeMessage = typeMessage
             };
             var addNewMessageTwo = new MessagerModel()
             {
@@ -95,14 +98,16 @@ public class MessagerService : IMeassagerService
                 IsCheked = false,
                 IdUserFrom = toUserId,
                 IdUserWhere = fromUserId,
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(), 
+                TypeMessage = typeMessage
             };
             _dbContext.Add(addNewMessage);
             _dbContext.Add(addNewMessageTwo);
-            
+
             await _dbContext.SaveChangesAsync();
         }
-        await SaveMessage(fromUserId, toUserId, content, DateTime.UtcNow);
+
+        await SaveMessage(fromUserId, toUserId, content, DateTime.UtcNow, typeMessage);
     }
 
     public async Task<List<MessageHistoryDTO>> GetHistoryMeassage(Guid idFromUser, Guid idToUser, int? count)
@@ -136,7 +141,8 @@ public class MessagerService : IMeassagerService
         {
             WhoseMessage = m.FromUserId,
             DateTimeMessage = m.Timestamp,
-            Text = m.Content
+            Text = m.Content,
+            TypeMessage = m.TypeMessage
         }).ToList();
 
         var result = new MessageHistoryDTO
@@ -151,23 +157,25 @@ public class MessagerService : IMeassagerService
         if (messagesPull != null)
         {
             messagesPull.IsCheked = true;
-            _dbContext.MessagerModels.Update(messagesPull); 
+            _dbContext.MessagerModels.Update(messagesPull);
         }
+
         await _dbContext.SaveChangesAsync();
-        
-        
+
+
         return new List<MessageHistoryDTO> { result };
     }
 
 
-    public async Task SaveMessage(Guid fromUserId, Guid toUserId, string content, DateTime timestamp)
+    public async Task SaveMessage(Guid fromUserId, Guid toUserId, string content, DateTime timestamp, TypeMessage typeMessage)
     {
         var message = new MessageInfo
         {
             FromUserId = fromUserId,
             ToUserId = toUserId,
             Content = content,
-            Timestamp = timestamp
+            Timestamp = timestamp,
+            TypeMessage = typeMessage
         };
 
         await _dbContext.MessageInfos.AddAsync(message);
