@@ -8,6 +8,9 @@ if (id == null || id == undefined){
 } else {
   document.getElementById("editProfileButton").style.display = "none";
   get(`http://localhost:5294/profile?id=${id}`)
+  const profileImage = document.getElementById("profile-image");
+  const newLink = `<a href="../chat/chat.html?&To=${id}" class="link buttons" style="margin-right: 0; margin-top: 15px; background-color: rgb(63, 63, 63);">Написать</a>`
+  profileImage.insertAdjacentHTML('afterend', newLink);
 }
 
 async function get(url, token) {
