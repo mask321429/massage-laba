@@ -17,18 +17,21 @@ public class UserController : ControllerBase
 
 
     [HttpGet("/profile")]
-    public async Task<IActionResult> GetUserProfile(string? name)
+    public async Task<IActionResult> GetUserProfile(string? name, Guid? id)
     {
-        if (!Guid.TryParse(User?.Identity?.Name, out Guid guidParse) && name == null)
+        if (!Guid.TryParse(User?.Identity?.Name, out Guid guidParse) && name == null && id == null)
         {
             return BadRequest("Invalid user ID or name not provided.");
         }
-
         try
         {
+            if (guidParse == null && id != null && name == null)
+            {
+                guidParse = (Guid)id;
+            }
             var result = guidParse != Guid.Empty ? 
                 await _userService.GetProfile(guidParse, name) : 
-                await _userService.GetProfile(null, name);
+                await _userService.GetProfile(id, name);
 
             return Ok(result);
 

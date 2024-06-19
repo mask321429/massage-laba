@@ -33,6 +33,7 @@ public class UserService : IUserService
         
         var profiles = users.Select(user => new ProfileDTO
         {
+            Id = user.Id,
             Login = user.Login,
             DateBirth = user.BirthDate,
             Avatar = user.AvatarUrl
