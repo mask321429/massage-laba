@@ -1,7 +1,14 @@
 var token = localStorage.getItem('token');
 
-const url = `http://localhost:5294/profile`;
-get(url, token)
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get('id');
+
+if (id == null || id == undefined){
+  get(`http://localhost:5294/profile`, token)
+} else {
+  document.getElementById("editProfileButton").style.display = "none";
+  get(`http://localhost:5294/profile?id=${id}`)
+}
 
 async function get(url, token) {
     return fetch(url, {

@@ -29,7 +29,7 @@ async function get(url) {
       const relativePath = '../../'.repeat(pathParts.length - photoIndex - 1) + pathParts.slice(photoIndex).join('/');
       codeString += `
         <div class="messager">
-            <a href="#" class="users-container">
+            <a href="../profile/profile.html?id=${item.id}" class="users-container">
                 <img src="${relativePath}" onerror="this.src='../profile/no-profile-min.png'" class="avatar">
                 <div style="overflow: hidden;ъ">
                     <div class="name">${item.login}</div>
