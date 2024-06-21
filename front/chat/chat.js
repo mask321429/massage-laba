@@ -3,7 +3,7 @@ const urlParams = new URLSearchParams(window.location.search);
 console.log(token);
 
 let myId;
-let type;
+let type = "text";
 const to = urlParams.get('To');
 console.log('To:', to);
 
@@ -59,7 +59,12 @@ async function displayMessage(message, user) {
     messageElement.textContent = message;
     messageElement.classList.add(user);
 
-    //messagesContainer.appendChild(messageElement);
+    if (type == "location") {
+        var longitude = parseFloat(message.match(/Долгота: (.*?),/)[1]);
+        var latitude = parseFloat(message.match(/Широта: (.*?)$/)[1]);
+        messageElement.innerHTML = `<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=${longitude}%2C${latitude}&layer=mapnik&marker=${latitude},${longitude}" width="100%" height="300" frameborder="0" scrolling="no"></iframe>`;
+    }
+
     const container = document.querySelector('.history');
     container.insertBefore(messageElement, container.firstChild);
 }
@@ -161,19 +166,23 @@ function handleMessageSelection() {
     switch (selectedValue) {
         case "text":
             console.log("Сообщение выбрано");
+            messageInput.value = '';
             type = 'text';
             break;
         case "image":
             console.log("Изображение выбрано");
+            messageInput.value = '';
             type = 'image';
             break;
         case "location":
             console.log("Геолокация выбрана");
+            messageInput.value = '';
             type = 'location';
             findLocation();
             break;
         case "audio":
             console.log("Аудио выбрано");
+            messageInput.value = '';
             type = 'audio';
             break;
         default:
@@ -183,7 +192,7 @@ function handleMessageSelection() {
 
 function findLocation() {
     if (!navigator.geolocation) {
-        status.textContent = 'Ваш браузер не дружит с геолокацией...'
+        console.log('Ваш браузер не дружит с геолокацией...');
     } else {
         navigator.geolocation.getCurrentPosition(success, error)
     }
@@ -193,8 +202,7 @@ function findLocation() {
         messageInput.value = `Долгота: ${longitude}, Широта: ${latitude}`;
     }
 
-    // Если всё плохо, просто напишем об этом
     function error() {
-        status.textContent = 'Не получается определить вашу геолокацию :('
+        console.log('Не получается определить вашу геолокацию :(');
     }
 }

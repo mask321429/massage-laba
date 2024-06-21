@@ -30,7 +30,7 @@
     <div class="container" style="display: flex; align-items: center; flex-direction: column;">
         <div class="messager email-container">
             <div class="chatName" id="chatName">
-                
+
             </div>
             <div class="chatfield">
                 <div class="history">
@@ -38,18 +38,21 @@
                 <div id="web-socket" class="web-socket">
                 </div>
             </div>
-            <div class="input-message">
-                <input type="text" id="messageInput" placeholder="Type your message here..." class="message-input" style="min-width: 47vw; margin-top: 15px;">
-                <button class="send-button" style="margin-top: 15px;" onclick="sendMessage()">
-                    <img src="send.svg" alt="Send" style="width: 2wh; height: 2vh;">
-                </button>
+            <div>
+                <div class="input-message">
+                    <input type="text" id="messageInput" placeholder="Type your message here..." class="message-input"
+                        style="min-width: 47vw; margin-top: 15px;">
+                    <button class="send-button" style="margin-top: 15px;" onclick="sendMessage()">
+                        <img src="send.svg" alt="Send" style="width: 2wh; height: 2vh;">
+                    </button>
+                </div>
+                <select id="messageType" class="message-type">
+                    <option value="text">Сообщение</option>
+                    <option value="image">Изображение</option>
+                    <option value="location">Геолокация</option>
+                    <option value="audio">Аудио</option>
+                </select>
             </div>
-            <select id="messageType" class="message-type" style="margin-top: 15px;">
-                <option value="text">Сообщение</option>
-                <option value="image">Изображение</option>
-                <option value="location">Геолокация</option>
-                <option value="audio">Аудио</option>
-            </select>
         </div>
     </div>
     <script src="chat.js"></script>
