@@ -101,7 +101,7 @@ public class MessagerService : IMeassagerService
                 IsCheked = false,
                 IdUserFrom = toUserId,
                 IdUserWhere = fromUserId,
-                Id = Guid.NewGuid(), 
+                Id = Guid.NewGuid(),
                 TypeMessage = typeMessage
             };
             _dbContext.Add(addNewMessage);
@@ -168,9 +168,65 @@ public class MessagerService : IMeassagerService
 
         return new List<MessageHistoryDTO> { result };
     }
+    public async Task SendPhoto(IFormFile photo, Guid toUserId, Guid fromUserId)
+    {
+        var content = Path.Combine($"{_baseUrl}", $"{fromUserId}_{Path.GetRandomFileName()}.jpg");
+        using (var stream = new FileStream(content, FileMode.Create))
+        {
+            photo.CopyTo(stream);
+        }
+        var socket = _connectionManager.GetSocketById(toUserId.ToString());
+        if (socket != null && socket.State == System.Net.WebSockets.WebSocketState.Open)
+        {
+            var messageObject = new
+            {
+                FromUserId = fromUserId,
+                Content = content,
+                Timestamp = DateTime.UtcNow,
+                TypeMessage = TypeMessage.photo
+            };
+
+            var messageBytes =
+                System.Text.Encoding.UTF8.GetBytes(System.Text.Json.JsonSerializer.Serialize(messageObject));
+            await socket.SendAsync(new ArraySegment<byte>(messageBytes, 0, messageBytes.Length),
+                System.Net.WebSockets.WebSocketMessageType.Text, true, System.Threading.CancellationToken.None);
+        }
+
+//        await SaveMessage(fromUserId, toUserId, content, DateTime.UtcNow);
+        var getAllMyMessage = await _dbContext.MessagerModels.FirstOrDefaultAsync(x =>
+            (x.IdUserFrom == fromUserId && x.IdUserWhere == toUserId) ||
+            (x.IdUserFrom == toUserId && x.IdUserWhere == fromUserId));
+
+        if (getAllMyMessage == null)
+        {
+            var addNewMessage = new MessagerModel()
+            {
+                LastLetter = DateTime.UtcNow,
+                IsCheked = false,
+                IdUserFrom = fromUserId,
+                IdUserWhere = toUserId,
+                Id = Guid.NewGuid(),
+                TypeMessage = TypeMessage.photo
+            };
+            var addNewMessageTwo = new MessagerModel()
+            {
+                LastLetter = DateTime.UtcNow,
+                IsCheked = false,
+                IdUserFrom = toUserId,
+                IdUserWhere = fromUserId,
+                Id = Guid.NewGuid(),
+                TypeMessage = TypeMessage.photo
+            };
+            _dbContext.Add(addNewMessage);
+            _dbContext.Add(addNewMessageTwo);
+
+            await _dbContext.SaveChangesAsync();
+        }
+    }
 
 
-    public async Task SaveMessage(Guid fromUserId, Guid toUserId, string content, DateTime timestamp, TypeMessage typeMessage)
+    public async Task SaveMessage(Guid fromUserId, Guid toUserId, string content, DateTime timestamp,
+        TypeMessage typeMessage)
     {
         var message = new MessageInfo
         {

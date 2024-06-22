@@ -9,5 +9,7 @@ public interface IMeassagerService
     Task SendMessage(Guid fromUserId, Guid toUserId, string content, TypeMessage typeMessage);
 
     Task<List<MessageHistoryDTO>> GetHistoryMeassage(Guid idFromUser, Guid idToUser, int? count);
+
+    Task SendPhoto(IFormFile photo, Guid toUserID, Guid fromUserId);
     //   Task SaveMessage(Guid fromUserId, Guid toUserId, string content, DateTime timestamp);
 }

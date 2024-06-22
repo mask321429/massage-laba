@@ -63,4 +63,15 @@ public class MessagerController : ControllerBase
 
         return Ok("Message sent");
     }
+    
+    
+    [HttpPost("send/photo/")]
+    public async Task<IActionResult> SendPhoto(IFormFile photo, Guid toUserId)
+    {
+        
+
+        await _messageService.SendPhoto(photo, toUserId, Guid.Parse(User.Identity.Name));
+
+        return Ok("Message sent");
+    }
 }
