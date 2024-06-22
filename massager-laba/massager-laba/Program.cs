@@ -141,7 +141,7 @@ static async Task HandleWebSocketCommunication(HttpContext context, WebSocket we
                     }
                     else
                     {
-                        Console.WriteLine("Invalid GUID format in message.");
+                        Console.WriteLine("Неверный формат guid в сообщении.");
                     }
                 }
             }
@@ -151,8 +151,8 @@ static async Task HandleWebSocketCommunication(HttpContext context, WebSocket we
     }
     catch (Exception ex)
     {
-        Console.WriteLine("Exception in WebSocket communication: " + ex.Message);
-        await webSocket.CloseAsync(WebSocketCloseStatus.InternalServerError, "Exception in WebSocket communication", CancellationToken.None);
+        Console.WriteLine("Исключение в связи WebSocket: " + ex.Message);
+        await webSocket.CloseAsync(WebSocketCloseStatus.InternalServerError, "Исключение в связи WebSocket", CancellationToken.None);
     }
     finally
     {

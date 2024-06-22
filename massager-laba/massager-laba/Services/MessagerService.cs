@@ -11,11 +11,13 @@ public class MessagerService : IMeassagerService
 {
     private readonly DBContext _dbContext;
     private readonly WebSocketConnectionManager _connectionManager;
+    private readonly string _baseUrl;
 
-    public MessagerService(DBContext dbContext, WebSocketConnectionManager connectionManager)
+    public MessagerService(DBContext dbContext, WebSocketConnectionManager connectionManager, IConfiguration baseUrl)
     {
         _dbContext = dbContext;
         _connectionManager = connectionManager;
+        _baseUrl = baseUrl["BaseUrl"];
     }
 
 
@@ -67,7 +69,8 @@ public class MessagerService : IMeassagerService
             {
                 FromUserId = fromUserId,
                 Content = content,
-                Timestamp = DateTime.UtcNow
+                Timestamp = DateTime.UtcNow,
+                TypeMessage = typeMessage
             };
 
             var messageBytes =

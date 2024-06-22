@@ -9,10 +9,12 @@ namespace massager_laba.Services;
 public class UserService : IUserService
 {
     private readonly DBContext _dbContext;
+    private readonly string BaseUrl;
 
-    public UserService(DBContext dbContext)
+    public UserService(DBContext dbContext, IConfiguration baseUrl)
     {
         _dbContext = dbContext;
+        BaseUrl = baseUrl["BaseUrl"];
     }
 
     public async Task<List<ProfileDTO>> GetProfile(Guid? id, string? name)
@@ -70,7 +72,7 @@ public class UserService : IUserService
 
     private string SaveAvatarToLocalDisk(IFormFile avatar, string login)
     {
-        var filePath = Path.Combine("/Users/kiselevmaksim/Pictures/photo", $"{login}_{Path.GetRandomFileName()}.jpg");
+        var filePath = Path.Combine($"{BaseUrl}", $"{login}_{Path.GetRandomFileName()}.jpg");
 
         using (var stream = new FileStream(filePath, FileMode.Create))
         {

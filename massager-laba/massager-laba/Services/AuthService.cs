@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using Amazon.S3;
 using Amazon.S3.Transfer;
@@ -16,10 +17,11 @@ namespace massager_laba.Services;
 public class AuthService : IAuthService
 {
     private readonly DBContext _dbContext;
-    
-    public AuthService(DBContext dbContext)
+    private readonly string _baseUrl;
+    public AuthService(DBContext dbContext, IConfiguration baseUrl)
     {
         _dbContext = dbContext;
+        _baseUrl = baseUrl["BaseUrl"];
     }
 
     public async Task<TokenDTO> RegisterUser(RegistrationDTO model)
@@ -84,8 +86,6 @@ public class AuthService : IAuthService
 
         var encodeJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-           
-
         return new TokenDTO()
         {
             Token = encodeJwt
@@ -147,7 +147,7 @@ public class AuthService : IAuthService
     }
     private string SaveAvatarToLocalDisk(IFormFile avatar, string login)
     {
-        var filePath = Path.Combine("/Users/kiselevmaksim/Pictures/photo", $"{login}_{Path.GetRandomFileName()}.jpg");
+        var filePath = Path.Combine($"{_baseUrl}", $"{login}_{Path.GetRandomFileName()}.jpg");
 
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
