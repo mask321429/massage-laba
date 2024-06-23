@@ -4,6 +4,7 @@ console.log(token);
 let messageCount = 0;
 let myId;
 let type = 0;
+var filePath;
 const to = urlParams.get('To');
 console.log('To:', to);
 
@@ -33,11 +34,9 @@ async function connectWebSocket() {
         messageCount++; // Increment the message count for each message received
         if (messageCount % 2 == 0) { // Check if the message count is even (skipping every second message)
             if (data.TypeMessage == 1) {
-                receiveImageChunk(data.Content);
-                //reassembleImage();
+                //receiveImageChunk(data.Content); - Разделение фотографии
             }
-            console.log(imageData);
-            displayMessageSocket(imageData, "message-other", data.TypeMessage);
+            displayMessageSocket(data.Content, "message-other", data.TypeMessage);
         }
     };
 
@@ -50,40 +49,39 @@ async function connectWebSocket() {
 async function sendMessage() {
     const message = messageInput.value;
     messageInput.value = '';
-    
     if (socket && socket.readyState === WebSocket.OPEN) {
-        if (type === 1) {
-            const imageInput = document.getElementById("fileInput");
-            const file = imageInput.files[0];
-            const chunkSize = 1024 * 32; // Define the chunk size
-            const reader = new FileReader();
+        // if (type === 1) {
+        //     const imageInput = document.getElementById("fileInput");
+        //     const file = imageInput.files[0];
+        //     const chunkSize = 1024 * 32; // Define the chunk size
+        //     const reader = new FileReader();
             
-            reader.onload = function(event) {
-                const imageData = event.target.result;
+        //     reader.onload = function(event) {
+        //         const imageData = event.target.result;
                 
-                if (typeof imageData === 'string') {
-                    const totalSize = imageData.length;
-                    let offset = 0;
-                    console.log(totalSize);
-                    while (offset < totalSize) {
-                        const chunk = imageData.slice(offset, offset + chunkSize);
-                        socket.send(JSON.stringify({
-                            FromUserId: myId,
-                            ToUserId: to,
-                            TypeMessage: type,
-                            Content: chunk
-                        }));
-                        offset += chunkSize;
-                    }
-                    console.log(imageData);
-                    console.log("Image data sent in chunks");
-                } else {
-                    console.log("Error: Image data is not in a valid format");
-                }
-            };
+        //         if (typeof imageData === 'string') {
+        //             const totalSize = imageData.length;
+        //             let offset = 0;
+        //             console.log(totalSize);
+        //             while (offset < totalSize) {
+        //                 const chunk = imageData.slice(offset, offset + chunkSize);
+        //                 socket.send(JSON.stringify({
+        //                     FromUserId: myId,
+        //                     ToUserId: to,
+        //                     TypeMessage: type,
+        //                     Content: chunk
+        //                 }));
+        //                 offset += chunkSize;
+        //             }
+        //             console.log(imageData);
+        //             console.log("Image data sent in chunks");
+        //         } else {
+        //             console.log("Error: Image data is not in a valid format");
+        //         }
+        //     };
             
-            reader.readAsDataURL(file);
-        } else {
+        //     reader.readAsDataURL(file);
+        // } else {
             socket.send(JSON.stringify({
                 FromUserId: myId,
                 ToUserId: to,
@@ -91,7 +89,7 @@ async function sendMessage() {
                 Content: message
             }));
             displayMessageSocket(message, "message-my", type);
-        }
+        
     } else {
         console.log('WebSocket is not connected');
     }
@@ -106,6 +104,11 @@ async function displayMessage(message, user, type) {
         var longitude = parseFloat(message.match(/Долгота: (.*?),/)[1]);
         var latitude = parseFloat(message.match(/Широта: (.*?)$/)[1]);
         messageElement.innerHTML = `<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=${longitude}%2C${latitude}&layer=mapnik&marker=${latitude},${longitude}" width="100%" height="300" frameborder="0" scrolling="no"></iframe>`;
+    }
+    if (type == 1) {
+        //image = btoa(message);
+        const newPath = message.replace('C:\\fakepath\\', '../../Фоточки/');
+        messageElement.innerHTML = `<img src="${newPath}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
     }
 
     const container = document.querySelector('.history');
@@ -127,7 +130,8 @@ async function displayMessageSocket(message, user, type) {
     }
     if (type == 1) {
         //image = btoa(message);
-        messageElement.innerHTML = `<img src="${message}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
+        const newPath = message.replace('C:\\fakepath\\', '../../Фоточки/');
+        messageElement.innerHTML = `<img src="${newPath}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
     }
     const container = document.querySelector('.web-socket');
 
@@ -261,11 +265,12 @@ function findLocation() {
 
 function updateFilePath() {
     var fileInputElement = document.getElementById("fileInput");
-    var filePath = fileInputElement.value;
+    filePath = fileInputElement.value;
     //messageInput.value = fileInputElement.files[0];
+    //fileInputElement.type = "hidden";
+    
     messageInput.value = filePath;
     console.log(filePath);
-    console.log(fileInputElement.files[0]);
 }
 
 
