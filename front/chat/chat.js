@@ -1,7 +1,7 @@
 var token = localStorage.getItem('token');
 const urlParams = new URLSearchParams(window.location.search);
 console.log(token);
-
+let messageCount = 0;
 let myId;
 let type = 0;
 const to = urlParams.get('To');
@@ -29,7 +29,16 @@ async function connectWebSocket() {
     socket.onmessage = function (event) {
         const data = JSON.parse(event.data);
         console.log(event.data);
-        displayMessageSocket(data.Content, "message-other", data.TypeMessage);
+        console.log(messageCount);
+        messageCount++; // Increment the message count for each message received
+        if (messageCount % 2 == 0) { // Check if the message count is even (skipping every second message)
+            if (data.TypeMessage == 1) {
+                receiveImageChunk(data.Content);
+                //reassembleImage();
+            }
+            console.log(imageData);
+            displayMessageSocket(imageData, "message-other", data.TypeMessage);
+        }
     };
 
     socket.onclose = function (event) {
@@ -40,16 +49,49 @@ async function connectWebSocket() {
 
 async function sendMessage() {
     const message = messageInput.value;
-
     messageInput.value = '';
+    
     if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({
-            FromUserId: myId,
-            ToUserId: to,
-            TypeMessage: type,
-            Content: message
-        }));
-        displayMessageSocket(message, "message-my", type);
+        if (type === 1) {
+            const imageInput = document.getElementById("fileInput");
+            const file = imageInput.files[0];
+            const chunkSize = 1024 * 32; // Define the chunk size
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                const imageData = event.target.result;
+                
+                if (typeof imageData === 'string') {
+                    const totalSize = imageData.length;
+                    let offset = 0;
+                    console.log(totalSize);
+                    while (offset < totalSize) {
+                        const chunk = imageData.slice(offset, offset + chunkSize);
+                        socket.send(JSON.stringify({
+                            FromUserId: myId,
+                            ToUserId: to,
+                            TypeMessage: type,
+                            Content: chunk
+                        }));
+                        offset += chunkSize;
+                    }
+                    console.log(imageData);
+                    console.log("Image data sent in chunks");
+                } else {
+                    console.log("Error: Image data is not in a valid format");
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        } else {
+            socket.send(JSON.stringify({
+                FromUserId: myId,
+                ToUserId: to,
+                TypeMessage: type,
+                Content: message
+            }));
+            displayMessageSocket(message, "message-my", type);
+        }
     } else {
         console.log('WebSocket is not connected');
     }
@@ -82,6 +124,10 @@ async function displayMessageSocket(message, user, type) {
         var longitude = parseFloat(message.match(/Долгота: (.*?),/)[1]);
         var latitude = parseFloat(message.match(/Широта: (.*?)$/)[1]);
         messageElement.innerHTML = `<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=${longitude}%2C${latitude}&layer=mapnik&marker=${latitude},${longitude}" width="100%" height="300" frameborder="0" scrolling="no"></iframe>`;
+    }
+    if (type == 1) {
+        //image = btoa(message);
+        messageElement.innerHTML = `<img src="${message}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
     }
     const container = document.querySelector('.web-socket');
 
@@ -162,6 +208,7 @@ chatfield.addEventListener('scroll', function () {
 document.getElementById("messageType").addEventListener("change", handleMessageSelection);
 function handleMessageSelection() {
     var selectElement = document.getElementById("messageType");
+    var fileInputElement = document.getElementById("fileInput");
     var selectedValue = selectElement.value;
 
     switch (selectedValue) {
@@ -169,22 +216,26 @@ function handleMessageSelection() {
             console.log("Сообщение выбрано");
             messageInput.value = '';
             type = 0;
+            fileInputElement.style.display = "none";
             break;
         case "image":
             console.log("Изображение выбрано");
             messageInput.value = '';
             type = 1;
+            fileInputElement.style.display = "block";
             break;
         case "location":
             console.log("Геолокация выбрана");
             messageInput.value = '';
             type = 2;
+            fileInputElement.style.display = "none";
             findLocation();
             break;
         case "audio":
             console.log("Аудио выбрано");
             messageInput.value = '';
             type = 3;
+            fileInputElement.style.display = "none";
             break;
         default:
             console.log("Неверная опция");
@@ -206,4 +257,44 @@ function findLocation() {
     function error() {
         console.log('Не получается определить вашу геолокацию :(');
     }
+}
+
+function updateFilePath() {
+    var fileInputElement = document.getElementById("fileInput");
+    var filePath = fileInputElement.value;
+    //messageInput.value = fileInputElement.files[0];
+    messageInput.value = filePath;
+    console.log(filePath);
+    console.log(fileInputElement.files[0]);
+}
+
+
+let receivedChunks = [];
+let imageData = '';
+
+function receiveImageChunk(chunk) {
+    receivedChunks.push(chunk);
+    console.log(receivedChunks)
+    imageData = receivedChunks.join('');
+}
+
+function reassembleImage() {
+    const imageData = receivedChunks.join(''); // Объедините все части
+    console.log(imageData);
+    const byteCharacters = atob(imageData); // Декодируйте данные base64
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    
+    const blob = new Blob([byteArray], { type: 'image/jpeg' }); // Создайте объект Blob
+    const imageUrl = URL.createObjectURL(blob); // Создайте URL для Blob
+    const imgElement = document.createElement('img');
+    //imgElement.src = imageUrl;
+    imgElement.src = imageData;
+    
+    // Отобразите восстановленное изображение
+    document.body.appendChild(imgElement);
+    console.log('data:image/png;base64,' + imgElement);
 }

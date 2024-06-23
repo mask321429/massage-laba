@@ -46,12 +46,15 @@
                         <img src="send.svg" alt="Send" style="width: 2wh; height: 2vh;">
                     </button>
                 </div>
-                <select id="messageType" class="message-type">
-                    <option value="text">Сообщение</option>
-                    <option value="image">Изображение</option>
-                    <option value="location">Геолокация</option>
-                    <option value="audio">Аудио</option>
-                </select>
+                <div class="input-message">
+                    <select id="messageType" class="message-type">
+                        <option value="text">Сообщение</option>
+                        <option value="image">Изображение</option>
+                        <option value="location">Геолокация</option>
+                        <option value="audio">Аудио</option>
+                    </select>
+                    <input type="file" style="max-width: 500%; width: auto; margin-bottom: 0; margin-left: 5px; display: none;" id="fileInput" name="fileInput" accept="image/*" onchange="updateFilePath()">
+                </div>
             </div>
         </div>
     </div>
