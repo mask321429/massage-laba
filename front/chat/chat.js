@@ -107,8 +107,8 @@ async function displayMessage(message, user, type) {
     }
     if (type == 1) {
         //image = btoa(message);
-        const newPath = message.replace('C:\\fakepath\\', '../../Фоточки/');
-        messageElement.innerHTML = `<img src="${newPath}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
+        //const newPath = message.replace('C:\\fakepath\\', '../../Фоточки/');
+        messageElement.innerHTML = `<img src="../../Фоточки/${message}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
     }
 
     const container = document.querySelector('.history');
@@ -130,8 +130,9 @@ async function displayMessageSocket(message, user, type) {
     }
     if (type == 1) {
         //image = btoa(message);
-        const newPath = message.replace('C:\\fakepath\\', '../../Фоточки/');
-        messageElement.innerHTML = `<img src="${newPath}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
+        //newPath = message.replace('C:\\fakepath\\', '../../Фоточки/');
+        
+        messageElement.innerHTML = `<img src="../../Фоточки/${message}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
     }
     const container = document.querySelector('.web-socket');
 
@@ -265,7 +266,7 @@ function findLocation() {
 
 function updateFilePath() {
     var fileInputElement = document.getElementById("fileInput");
-    filePath = fileInputElement.value;
+    filePath = fileInputElement.files[0].name;
     //messageInput.value = fileInputElement.files[0];
     //fileInputElement.type = "hidden";
     
