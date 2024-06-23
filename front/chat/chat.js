@@ -3,7 +3,7 @@ const urlParams = new URLSearchParams(window.location.search);
 console.log(token);
 
 let myId;
-let type = "text";
+let type = 0;
 const to = urlParams.get('To');
 console.log('To:', to);
 
@@ -28,7 +28,8 @@ async function connectWebSocket() {
 
     socket.onmessage = function (event) {
         const data = JSON.parse(event.data);
-        displayMessageSocket(data.Content, "message-other");
+        console.log(event.data);
+        displayMessageSocket(data.Content, "message-other", data.TypeMessage);
     };
 
     socket.onclose = function (event) {
@@ -45,7 +46,7 @@ async function sendMessage() {
         socket.send(JSON.stringify({
             FromUserId: myId,
             ToUserId: to,
-            //Type: type,
+            TypeMessage: type,
             Content: message
         }));
         displayMessageSocket(message, "message-my", type);
@@ -54,12 +55,12 @@ async function sendMessage() {
     }
 }
 
-async function displayMessage(message, user) {
+async function displayMessage(message, user, type) {
     const messageElement = document.createElement('div');
     messageElement.textContent = message;
     messageElement.classList.add(user);
 
-    if (type == "location") {
+    if (type == 2) {
         var longitude = parseFloat(message.match(/Долгота: (.*?),/)[1]);
         var latitude = parseFloat(message.match(/Широта: (.*?)$/)[1]);
         messageElement.innerHTML = `<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=${longitude}%2C${latitude}&layer=mapnik&marker=${latitude},${longitude}" width="100%" height="300" frameborder="0" scrolling="no"></iframe>`;
@@ -77,7 +78,7 @@ async function displayMessageSocket(message, user, type) {
 
     messagesContainer.appendChild(messageElement);
 
-    if (type == "location") {
+    if (type == 2) {
         var longitude = parseFloat(message.match(/Долгота: (.*?),/)[1]);
         var latitude = parseFloat(message.match(/Широта: (.*?)$/)[1]);
         messageElement.innerHTML = `<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=${longitude}%2C${latitude}&layer=mapnik&marker=${latitude},${longitude}" width="100%" height="300" frameborder="0" scrolling="no"></iframe>`;
@@ -115,9 +116,9 @@ async function getHistory(url, token) {
 
             data[0].messages.forEach(function (element) {
                 if (element.whoseMessage == myId) {
-                    displayMessage(element.text, "message-my");
+                    displayMessage(element.text, "message-my", element.typeMessage);
                 } else {
-                    displayMessage(element.text, "message-other");
+                    displayMessage(element.text, "message-other", element.typeMessage);
                 }
             });
 
@@ -167,23 +168,23 @@ function handleMessageSelection() {
         case "text":
             console.log("Сообщение выбрано");
             messageInput.value = '';
-            type = 'text';
+            type = 0;
             break;
         case "image":
             console.log("Изображение выбрано");
             messageInput.value = '';
-            type = 'image';
+            type = 1;
             break;
         case "location":
             console.log("Геолокация выбрана");
             messageInput.value = '';
-            type = 'location';
+            type = 2;
             findLocation();
             break;
         case "audio":
             console.log("Аудио выбрано");
             messageInput.value = '';
-            type = 'audio';
+            type = 3;
             break;
         default:
             console.log("Неверная опция");
