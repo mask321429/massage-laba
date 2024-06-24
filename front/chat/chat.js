@@ -108,7 +108,11 @@ async function displayMessage(message, user, type) {
     if (type == 1) {
         //image = btoa(message);
         //const newPath = message.replace('C:\\fakepath\\', '../../Фоточки/');
-        messageElement.innerHTML = `<img src="../../Фоточки/${message}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
+        console.log(message);
+        const commonPath = 'D:\\Файлы\\Документы\\Университет\\HITs\\2 курс\\2 семестр\\Проектная разработка Back\\';
+        const newPath = message.replace(commonPath, '../../');
+
+        messageElement.innerHTML = `<img src="${newPath}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
     }
 
     const container = document.querySelector('.history');
@@ -131,8 +135,15 @@ async function displayMessageSocket(message, user, type) {
     if (type == 1) {
         //image = btoa(message);
         //newPath = message.replace('C:\\fakepath\\', '../../Фоточки/');
-        
-        messageElement.innerHTML = `<img src="../../Фоточки/${message}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
+        const data = {
+            to: to,
+            myId: myId,
+            file: document.getElementById("fileInput").files[0]
+          };
+        SendPhoto(data);
+        const commonPath = 'D:\\Файлы\\Документы\\Университет\\HITs\\2 курс\\2 семестр\\Проектная разработка Back\\';
+        const newPath = message.replace(commonPath, '../../');
+        messageElement.innerHTML = `<img src="${newPath}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
     }
     const container = document.querySelector('.web-socket');
 
@@ -270,7 +281,7 @@ function updateFilePath() {
     //messageInput.value = fileInputElement.files[0];
     //fileInputElement.type = "hidden";
     
-    messageInput.value = filePath;
+    messageInput.value = "D:\\Файлы\\Документы\\Университет\\HITs\\2 курс\\2 семестр\\Проектная разработка Back\\Фоточки\\" + filePath;
     console.log(filePath);
 }
 
@@ -303,4 +314,25 @@ function reassembleImage() {
     // Отобразите восстановленное изображение
     document.body.appendChild(imgElement);
     console.log('data:image/png;base64,' + imgElement);
+}
+
+
+
+async function SendPhoto(data) {
+    const url = `http://localhost:5294/api/Messager/send/photo?toUserId=${data.to}`;
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+            'accept': '*/*',
+            "Authorization": `Bearer ${token}`
+        },
+        body: data.file
+    };
+    return fetch(url, requestOptions)
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
