@@ -82,6 +82,15 @@ async function sendMessage() {
             
         //     reader.readAsDataURL(file);
         // } else {
+        if (type == 1){
+            const data = {
+                to: to,
+                myId: myId,
+                file: document.getElementById("fileInput").files[0]
+              };
+              console.log(data);
+            SendPhoto(data);
+        } else {
             socket.send(JSON.stringify({
                 FromUserId: myId,
                 ToUserId: to,
@@ -89,7 +98,7 @@ async function sendMessage() {
                 Content: message
             }));
             displayMessageSocket(message, "message-my", type);
-        
+        }        
     } else {
         console.log('WebSocket is not connected');
     }
@@ -109,9 +118,9 @@ async function displayMessage(message, user, type) {
         //image = btoa(message);
         //const newPath = message.replace('C:\\fakepath\\', '../../Фоточки/');
         console.log(message);
-        const commonPath = 'D:\\Файлы\\Документы\\Университет\\HITs\\2 курс\\2 семестр\\Проектная разработка Back\\';
+        const commonPath = 'D:\\Файлы\\Документы\\Университет\\HITs\\2 курс\\2 семестр\\Проектная разработка\\Git\\massage-laba\\';
         const newPath = message.replace(commonPath, '../../');
-
+        console.log(newPath);
         messageElement.innerHTML = `<img src="${newPath}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
     }
 
@@ -135,15 +144,20 @@ async function displayMessageSocket(message, user, type) {
     if (type == 1) {
         //image = btoa(message);
         //newPath = message.replace('C:\\fakepath\\', '../../Фоточки/');
-        const data = {
-            to: to,
-            myId: myId,
-            file: document.getElementById("fileInput").files[0]
-          };
-        SendPhoto(data);
-        const commonPath = 'D:\\Файлы\\Документы\\Университет\\HITs\\2 курс\\2 семестр\\Проектная разработка Back\\';
-        const newPath = message.replace(commonPath, '../../');
-        messageElement.innerHTML = `<img src="${newPath}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
+        // const data = {
+        //     to: to,
+        //     myId: myId,
+        //     file: document.getElementById("fileInput").files[0]
+        //   };
+        // SendPhoto(data);
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            messageElement.innerHTML = `<img src="${e.target.result}" width="100%" height="300" frameborder="0" scrolling="no"></img>`;
+            previewImage.style.display = 'block';
+        };
+    
+        reader.readAsDataURL(file);
     }
     const container = document.querySelector('.web-socket');
 
@@ -281,7 +295,7 @@ function updateFilePath() {
     //messageInput.value = fileInputElement.files[0];
     //fileInputElement.type = "hidden";
     
-    messageInput.value = "D:\\Файлы\\Документы\\Университет\\HITs\\2 курс\\2 семестр\\Проектная разработка Back\\Фоточки\\" + filePath;
+    messageInput.value = fileInputElement.files[0];//"D:\\Файлы\\Документы\\Университет\\HITs\\2 курс\\2 семестр\\Проектная разработка Back\\Фоточки\\" + filePath;
     console.log(filePath);
 }
 
@@ -319,14 +333,16 @@ function reassembleImage() {
 
 
 async function SendPhoto(data) {
+    const formData = new FormData();
+    formData.append('photo', data.file);
     const url = `http://localhost:5294/api/Messager/send/photo?toUserId=${data.to}`;
     const requestOptions = {
         method: 'POST',
         headers: {
-            'accept': '*/*',
-            "Authorization": `Bearer ${token}`
+            'Accept': '*/*',
+            'Authorization': `Bearer ${token}`
         },
-        body: data.file
+        body: formData
     };
     return fetch(url, requestOptions)
         .then(response => {
